@@ -1,5 +1,8 @@
-package src.main.java.com.shopping.service;
+package com.shopping.service;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class LoginServiceImpl{
 
 }
