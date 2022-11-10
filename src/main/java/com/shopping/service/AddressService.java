@@ -1,5 +1,7 @@
 package com.shopping.service;
 
+import com.shopping.exception.AddressException;
+import com.shopping.model.Address;
 
 public interface AddressService {
 	public Address createAddress(Address a) throws AddressException;
