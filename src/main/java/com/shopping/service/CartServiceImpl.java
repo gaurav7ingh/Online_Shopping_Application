@@ -7,7 +7,7 @@ import com.shopping.model.Cart;
 import com.shopping.model.Product;
 
 @Service
-public class CartServiceImpl implements CartService{
+public class CartServiceImpl implements CartService {
 
 	@Override
 	public Cart addProductToCart(Cart c, Product p, Integer quantity) throws CartException {
