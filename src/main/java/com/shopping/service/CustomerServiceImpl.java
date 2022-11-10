@@ -1,4 +1,4 @@
-package src.main.java.com.shopping.service;
+package com.shopping.service;
 
 public class CustomerServiceImpl {
 

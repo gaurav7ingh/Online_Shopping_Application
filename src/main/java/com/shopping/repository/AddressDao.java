@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.shopping.model.Address;
 
 @Repository
-public interface AddressDao extends JpaRepository<Address, I>{
+public interface AddressDao extends JpaRepository<Address, Integer>{
 
 }
