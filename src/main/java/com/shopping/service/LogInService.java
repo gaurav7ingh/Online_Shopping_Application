@@ -1,4 +1,4 @@
-
+package com.shopping.service;
 
 import com.shopping.model.User;
 import com.shopping.exception.UserException;
