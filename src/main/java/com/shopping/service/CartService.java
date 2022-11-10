@@ -1,8 +1,6 @@
 package com.shopping.service;
 
-import com.shopping.exception.CartException;
-import com.shopping.model.Cart;
-import com.shopping.model.Product;
+
 
 public interface CartService {
 	public  Cart addProductToCart(Cart c, Product p , Integer quantity) throws CartException ;
