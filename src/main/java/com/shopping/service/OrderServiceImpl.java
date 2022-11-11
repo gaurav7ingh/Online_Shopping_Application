@@ -1,5 +1,5 @@
 package com.shopping.service;
 
-public class OrderServiceImpl {
+public class OrderServiceImpl implements OrderService {
 
 }

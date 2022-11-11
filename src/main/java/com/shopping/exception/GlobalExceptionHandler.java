@@ -102,7 +102,7 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<ShoppingError>(err, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity<ShoppingError> noHandlerFoundHandler(NoHandlerFoundException e, WebRequest req) {
 
@@ -114,9 +114,10 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ShoppingError>(err, HttpStatus.BAD_REQUEST);
 
 	}
-	
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ShoppingError> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e, WebRequest req) {
+	public ResponseEntity<ShoppingError> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e,
+			WebRequest req) {
 
 		ShoppingError err = new ShoppingError();
 		err.setTimestamp(LocalDateTime.now());
