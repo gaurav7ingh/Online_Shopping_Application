@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.shopping.exception.CustomerException;
 import com.shopping.model.Customer;
-import com.shopping.repository.AddressDao;
+
 import com.shopping.repository.CustomerRepo;
 
 @Service
