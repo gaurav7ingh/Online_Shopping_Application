@@ -54,10 +54,18 @@ public class CartServiceImpl implements CartService {
 		if (!optional.isPresent())
 			throw new CartException("No Cart exits for update the quantity");
 
-		c.getProducts().put(p, quantity);
+		else {
+			Cart cs = optional.get();
 
-		Cart cart = cartDao.save(c);
-		return cart;
+			Integer value = cs.getProducts().get(p);
+
+			value = value + quantity;
+
+			cs.getProducts().put(p, value);
+
+			Cart cart = cartDao.save(cs);
+			return cart;
+		}
 	}
 
 	@Override
