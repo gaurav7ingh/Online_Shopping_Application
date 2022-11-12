@@ -2,11 +2,6 @@ package com.shopping.service;
 
 import java.util.List;
 import java.util.Optional;
-<<<<<<< HEAD
-=======
-
->>>>>>> 369c430a38d5d4c7f2ba19cfd6e1fdf7e29b8f1f
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
