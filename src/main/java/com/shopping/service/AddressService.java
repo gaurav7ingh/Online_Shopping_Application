@@ -7,7 +7,7 @@ import com.shopping.exception.CustomerException;
 import com.shopping.model.Address;
 
 public interface AddressService {
-	public Address createAddress(Address a) throws AddressException;
+	public Address createAddress(Address a,Integer customerId) throws AddressException, CustomerException;
 
 	public Address updateAddress(Address a) throws AddressException;
 

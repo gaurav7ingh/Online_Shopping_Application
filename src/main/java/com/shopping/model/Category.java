@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 @Entity
 public class Category {
 
@@ -19,6 +21,7 @@ public class Category {
 	private Integer catId;
 
 	@NotNull
+	@UniqueElements
 	private String category;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")

@@ -13,6 +13,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,8 +42,10 @@ public class Orders {
 	@NotEmpty
 	private String orderStatus;
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Cart cart;
+
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Customer customer;

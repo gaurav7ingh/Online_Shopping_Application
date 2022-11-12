@@ -5,12 +5,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.shopping.exception.CartException;
 import com.shopping.model.Cart;
 import com.shopping.model.Product;
 import com.shopping.repository.CartDao;
 
+@Service
 public class CartServiceImpl implements CartService {
 
 	@Autowired
