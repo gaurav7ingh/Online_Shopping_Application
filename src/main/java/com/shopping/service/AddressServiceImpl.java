@@ -2,8 +2,10 @@ package com.shopping.service;
 
 import java.util.Optional;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.shopping.exception.AddressException;
 import com.shopping.exception.CustomerException;
 import com.shopping.model.Address;

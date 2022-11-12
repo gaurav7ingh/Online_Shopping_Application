@@ -2,15 +2,12 @@ package com.shopping.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopping.exception.CustomerException;
-import com.shopping.model.Address;
 import com.shopping.model.Customer;
-import com.shopping.repository.AddressDao;
 import com.shopping.repository.CustomerRepo;
 
 @Service
@@ -22,7 +19,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Customer addCustomer(Customer cust) throws CustomerException {
 
-		Customer existingCustomer = custRepo.findByemail(cust.getEmail());
+		Customer existingCustomer = custRepo.findByEmail(cust.getEmail());
 		if(existingCustomer!=null) {
 			throw new CustomerException("Customer Already Registered with Email Id");
 		}
