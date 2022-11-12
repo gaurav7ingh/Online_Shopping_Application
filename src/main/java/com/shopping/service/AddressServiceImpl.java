@@ -23,6 +23,7 @@ public class AddressServiceImpl implements AddressService {
 	private CustomerRepo customerDao;
 	@Autowired
 	private CustomerService cSer;
+
 	@Override
 	public Address addAddress(Address a) throws AddressException, CustomerException {
 //		Customer c = a.getCustomer();
@@ -30,10 +31,9 @@ public class AddressServiceImpl implements AddressService {
 //			throw new AddressException("This Address already exists");
 //
 //		c.getAddresses().add(a);
-		
-		a.get
-		cSer.ViewAllCustomers("de");
-		
+//		
+//		a.get
+//		cSer.ViewAllCustomers("de");
 
 		Address address = addressDao.save(a);
 
