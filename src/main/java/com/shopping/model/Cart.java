@@ -10,18 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Cart {
 
 	@Id
@@ -32,4 +21,25 @@ public class Cart {
 	@OneToMany(targetEntity = Product.class, cascade = CascadeType.ALL)
 	private Map<Product, Integer> Products = new HashMap<>();
 
+
+	public Integer getCartId() {
+		return cartId;
+	}
+
+
+	public void setCartId(Integer cartId) {
+		this.cartId = cartId;
+	}
+
+
+	public Map<Product, Integer> getProducts() {
+		return Products;
+	}
+
+
+	public void setProducts(Map<Product, Integer> products) {
+		Products = products;
+	}
+
+	
 }

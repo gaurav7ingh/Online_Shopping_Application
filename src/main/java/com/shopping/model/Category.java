@@ -26,4 +26,30 @@ public class Category {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
 	private Set<Product> products = new HashSet<>();
+
+	public Integer getCatId() {
+		return catId;
+	}
+
+	public void setCatId(Integer catId) {
+		this.catId = catId;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
+	
+	
 }
