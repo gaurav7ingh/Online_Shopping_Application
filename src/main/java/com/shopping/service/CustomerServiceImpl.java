@@ -19,11 +19,13 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private CustomerRepo custRepo;
 
-
 	@Override
 	public Customer addCustomer(Customer cust) throws CustomerException {
 
-		
+		Customer existingCustomer = custRepo.findByemail(cust.getEmail());
+		if(existingCustomer!=null) {
+			throw new CustomerException("Customer Already Registered with Email Id");
+		}
 		Customer savedCustomer = custRepo.save(cust);
 		if (savedCustomer != null) {
 			return savedCustomer;
