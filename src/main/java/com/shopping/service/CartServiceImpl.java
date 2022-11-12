@@ -36,16 +36,19 @@ public class CartServiceImpl implements CartService {
 		if (!optional.isPresent())
 			throw new CartException("No Cart exits for remove this product");
 
-		if (!c.getProducts().containsKey(p))
+		if (!c.getProducts().containsKey(p)) {
 			throw new CartException("no similer product exits");
+		} else {
 
-		Integer i = c.getProducts().remove(p);
-		if (i < 0)
-			throw new CartException("product is not deleted");
+			Integer i = c.getProducts().remove(p);
+			if (i < 0) {
+				throw new CartException("product is not deleted");
+			} else {
+				Cart cart = cartDao.save(c);
 
-		Cart cart = cartDao.save(c);
-
-		return cart;
+				return cart;
+			}
+		}
 	}
 
 	@Override
@@ -54,21 +57,33 @@ public class CartServiceImpl implements CartService {
 		if (!optional.isPresent())
 			throw new CartException("No Cart exits for update the quantity");
 
-		c.getProducts().put(p, quantity);
+		else {
+			Cart cs = optional.get();
 
-		Cart cart = cartDao.save(c);
-		return cart;
+			Integer value = cs.getProducts().get(p);
+
+			value = value + quantity;
+
+			cs.getProducts().put(p, value);
+
+			Cart cart = cartDao.save(cs);
+			return cart;
+		}
 	}
 
 	@Override
 	public Cart removeAllProduct(Cart c) throws CartException {
 		Optional<Cart> optional = cartDao.findById(c.getCartId());
-		if (!optional.isPresent())
+		if (!optional.isPresent()) {
 			throw new CartException("No Cart exits for removing the products");
-		c.setProducts(new HashMap<>());
-		Cart cart = cartDao.save(c);
+		} else {
 
-		return cart;
+			c.setProducts(new HashMap<>());
+			Cart cart = cartDao.save(c);
+
+			return cart;
+
+		}
 	}
 
 	@Override
