@@ -13,7 +13,7 @@ import com.shopping.model.Customer;
 import com.shopping.repository.AddressDao;
 import com.shopping.repository.CustomerRepo;
 
-@Service
+@Service(value = "aSer")
 public class AddressServiceImpl implements AddressService {
 
 	@Autowired
@@ -21,14 +21,19 @@ public class AddressServiceImpl implements AddressService {
 
 	@Autowired
 	private CustomerRepo customerDao;
-
+	@Autowired
+	private CustomerService cSer;
 	@Override
-	public Address createAddress(Address a) throws AddressException {
-		Customer c = a.getCustomer();
-		if (c.getAddresses().contains(a))
-			throw new AddressException("This Address already exists");
-
-		c.getAddresses().add(a);
+	public Address addAddress(Address a) throws AddressException, CustomerException {
+//		Customer c = a.getCustomer();
+//		if (c.getAddresses().contains(a))
+//			throw new AddressException("This Address already exists");
+//
+//		c.getAddresses().add(a);
+		
+		a.get
+		cSer.ViewAllCustomers("de");
+		
 
 		Address address = addressDao.save(a);
 
