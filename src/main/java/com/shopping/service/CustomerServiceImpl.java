@@ -2,68 +2,94 @@ package com.shopping.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.shopping.exception.CustomerException;
+import com.shopping.model.Address;
+import com.shopping.model.CurrentUserSession;
 import com.shopping.model.Customer;
+import com.shopping.repository.CurrentUserSessionRepo;
 import com.shopping.repository.CustomerRepo;
 
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CustomerRepo custRepo;
+	
+	@Autowired
+	private CurrentUserSessionRepo currRepo;
 
 	@Override
 	public Customer addCustomer(Customer cust) throws CustomerException {
-		Customer savedCustomer = custRepo.save(cust);
-		if (savedCustomer != null) {
-			return savedCustomer;
-		} else {
-			throw new CustomerException("Customer not saved!.....");
+		
+		Customer existingCustomer = custRepo.findByemail(cust.getEmail());
+		
+		Set<Address> addr = cust.getAddresses();
+		
+		if(existingCustomer!=null) {
+			throw new CustomerException("Customer Already Registered with Email Id");
 		}
+		return custRepo.save(cust);
+		
 	}
 
 	@Override
-	public Customer updateCustomer(Customer cust) throws CustomerException {
-		Optional<Customer> optional = custRepo.findById(cust.getCustomerId());
-
-		if (!optional.isPresent())
-			throw new CustomerException("No customer exists with this information");
-
-		Customer customer = custRepo.save(cust);
-		if (customer == null)
-			throw new CustomerException("customer not updated");
-		return customer;
+	public Customer updateCustomer(Customer cust, String key) throws CustomerException {
+		// TODO Auto-generated method stub
+	
+		CurrentUserSession loggedInUser  = currRepo.findByUuid(key);
+		
+		if(loggedInUser==null) {
+			throw new CustomerException("Please provide a valid key to update a customer");	
+		}
+		if(cust.getCustomerId()==loggedInUser.getUserId()) {
+			return custRepo.save(cust);
+		}
+		else {
+			throw new CustomerException("Invalid Customer Details, please login first");
+		}
+		
 	}
 
 	@Override
-	public Customer removeCustomer(Customer cust) throws CustomerException {
-		Optional<Customer> cus = custRepo.findById(cust.getCustomerId());
-		if (!cus.isPresent())
+	public Customer removeCustomer(String email) throws CustomerException {
+		Customer cus = custRepo.findByemail(email);
+		
+		if(cus!=null) {
+			custRepo.delete(cus);
+			return cus;
+		}
+		else 
+		throw new CustomerException("This customer doesn't exist");
+		
+	}
+
+	@Override
+	public Customer viewCustomer(String email) throws CustomerException {
+		// TODO Auto-generated method stub
+        Customer existingCustomer = custRepo.findByemail(email);
+		
+		if(existingCustomer!=null) {
+			return existingCustomer;
+		}
+		else {
 			throw new CustomerException("This customer doesn't exist");
-		custRepo.delete(cust);
-		return cus.get();
+		}
+		
 	}
 
 	@Override
-	public Customer viewCustomer(Customer cust) throws CustomerException {
-		Optional<Customer> optional = custRepo.findById(cust.getCustomerId());
-		if (!optional.isPresent())
-			throw new CustomerException("Customer not found");
-		return optional.get();
-	}
-
-	@Override
-	public List<Customer> ViewAllCustomers(String location) throws CustomerException {
-
+	public List<Customer> ViewAllCustomers() throws CustomerException {
+		// TODO Auto-generated method stub
 		List<Customer> viewAllCust = custRepo.findAll();
 		if (viewAllCust.size() == 0) {
-			throw new CustomerException("No Customer are there");
+		throw new CustomerException("No Customer are there");
 		} else {
 			return viewAllCust;
 		}
-
 	}
-
 }
