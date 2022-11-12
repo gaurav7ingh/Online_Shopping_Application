@@ -42,7 +42,6 @@ public class Product {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Category category;
 	
-	
 
 	public Integer getProductId() {
 		return productId;

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Customer {
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer customerId;

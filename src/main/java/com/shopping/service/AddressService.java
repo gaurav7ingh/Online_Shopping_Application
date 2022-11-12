@@ -15,6 +15,6 @@ public interface AddressService {
 
 	public Address removeAddress(Address a) throws AddressException;
 
-	public Address viewAddress(Address a) throws AddressException;
+	public Address viewAddress(Integer a) throws AddressException;
 
 }

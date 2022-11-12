@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.springframework.context.annotation.Bean;
+
 @Entity
 public class Cart {
 
@@ -31,12 +33,12 @@ public class Cart {
 		this.cartId = cartId;
 	}
 
-
 	public Map<Product, Integer> getProducts() {
 		return Products;
 	}
 
-
+	
+	@Bean(value = "products")
 	public void setProducts(Map<Product, Integer> products) {
 		Products = products;
 	}

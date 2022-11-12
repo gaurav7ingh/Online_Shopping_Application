@@ -76,12 +76,15 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Address viewAddress(Address a) throws AddressException {
-		Optional<Address> add = addressDao.findById(a.getAddressId());
+	public Address viewAddress(Integer a) throws AddressException {
+		Optional<Address> add = addressDao.findById(a);
 		if (!add.isPresent())
 			throw new AddressException("No address exits for the same");
 
-		return add.get();
+		Address address = add.get();
+		System.out.println(address);
+		
+		return address;
 	}
 
 }

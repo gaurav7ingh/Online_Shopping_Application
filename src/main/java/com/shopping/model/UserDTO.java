@@ -2,22 +2,19 @@ package com.shopping.model;
 
 public class UserDTO {
 
+	private String email;
 
-	  private String email;
-	  
-	  private String password;
+	private String password;
 
-	  public UserDTO() {
+	public UserDTO() {
 		// TODO Auto-generated constructor stub
 	}
-	  
-	  
+
 	public UserDTO(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
 	}
-
 
 	public String getEmail() {
 		return email;
@@ -34,6 +31,5 @@ public class UserDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	  
-	  
+
 }
