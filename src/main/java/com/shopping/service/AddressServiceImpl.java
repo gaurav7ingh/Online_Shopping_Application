@@ -2,10 +2,8 @@ package com.shopping.service;
 
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.shopping.exception.AddressException;
 import com.shopping.exception.CustomerException;
 import com.shopping.model.Address;
@@ -23,15 +21,21 @@ public class AddressServiceImpl implements AddressService {
 	private CustomerRepo customerDao;
 
 	@Override
-	public Address createAddress(Address a) throws AddressException {
-		Customer c = a.getCustomer();
-		if (c.getAddresses().contains(a))
-			throw new AddressException("This Address already exists");
-
-		c.getAddresses().add(a);
-
+	public Address createAddress(Address a,Integer id) throws AddressException, CustomerException {
+		Optional<Customer> customer =  customerDao.findById(id);
+		if(customer == null)
+			throw new CustomerException("Please provide the currect customer Id...!");
+	
+		Set<Address> addresses = customer.get().getAddresses();
+		if(addresses.contains(a))
+			throw new AddressException("Address is already mentioned");
+		addresses.add(a);
+		a.setCustomer(customer.get());
+		
 		Address address = addressDao.save(a);
-
+		if(address == null)
+			throw new AddressException("Address Not saved yet...!");
+		
 		return address;
 	}
 
