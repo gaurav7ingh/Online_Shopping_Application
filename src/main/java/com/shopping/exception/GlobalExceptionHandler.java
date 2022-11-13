@@ -102,7 +102,7 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<ShoppingError>(err, HttpStatus.BAD_REQUEST);
 	}
-
+	
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity<ShoppingError> noHandlerFoundHandler(NoHandlerFoundException e, WebRequest req) {
 

@@ -61,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<Customer> ViewAllCustomers(String location) throws CustomerException {
+	public List<Customer> ViewAllCustomers() throws CustomerException {
 
 		List<Customer> viewAllCust = custRepo.findAll();
 		if (viewAllCust.size() == 0) {
