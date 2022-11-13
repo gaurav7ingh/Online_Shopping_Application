@@ -48,6 +48,8 @@ public class AddressServiceImpl implements AddressService {
 		if (!optional.isPresent())
 			throw new AddressException("This address does't exists");
 
+		Customer customer =  optional.get().getCustomer();
+		a.setCustomer(customer);
 		Address address = addressDao.save(a);
 
 		return address;

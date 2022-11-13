@@ -69,6 +69,7 @@ public class CartServiceImpl implements CartService {
 			Cart cs = optional.get();
 			
 			p = productService.viewProduct(p.getProductId());
+			
 			cs.getProducts().put(p, quantity);
 
 			Cart cart = cartDao.save(cs);

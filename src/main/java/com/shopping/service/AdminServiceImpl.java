@@ -54,7 +54,9 @@ public class AdminServiceImpl implements AdminService {
 
 		if (!opt.isPresent())
 			throw new ProductException("No Product exists with this information");
-
+		
+		Category cat =  opt.get().getCategorys();
+		product.setCategorys(cat);
 		Product updatedProduct = prodRepo.save(product);
 		if (updatedProduct == null)
 			throw new ProductException("Product not updated");

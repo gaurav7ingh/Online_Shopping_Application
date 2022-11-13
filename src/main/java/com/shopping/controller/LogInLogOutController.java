@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopping.exception.UserException;
+import com.shopping.model.CurrentUserSession;
 import com.shopping.model.UserDTO;
 import com.shopping.service.LogInService;
 
@@ -22,10 +23,10 @@ public class LogInLogOutController {
 	private LogInService logService;
 
 	@PostMapping("/login")
-	public ResponseEntity<String> logInHandler(@Valid @RequestBody UserDTO dto) throws UserException {
-		String result = logService.loginUser(dto);
+	public ResponseEntity<CurrentUserSession> logInHandler(@Valid @RequestBody UserDTO dto) throws UserException {
+		CurrentUserSession result = logService.loginUser(dto);
 
-		return new ResponseEntity<String>(result, HttpStatus.OK);
+		return new ResponseEntity<CurrentUserSession>(result, HttpStatus.OK);
 	}
 
 	@GetMapping("/logout")

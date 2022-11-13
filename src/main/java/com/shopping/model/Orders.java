@@ -11,11 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Validated
@@ -25,9 +28,7 @@ public class Orders {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer orderId;
 
-	@NotBlank
 	@NotNull
-	@NotEmpty
 	private LocalDate orderDate;
 
 	@NotBlank
@@ -35,11 +36,15 @@ public class Orders {
 	@NotEmpty
 	private String orderStatus;
 
+	private Integer addressId;
+	
 	private String location;
 	
+//	@JsonIgnore
 	@ElementCollection
-	private Map<Product, Integer> products = new HashMap<>();
+	private Map<Product, Integer> orderedProducts = new HashMap<>();
 
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 
@@ -74,7 +79,7 @@ public class Orders {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	
+
 
 	public String getLocation() {
 		return location;
@@ -84,12 +89,24 @@ public class Orders {
 		this.location = location;
 	}
 
-	public Map<Product, Integer> getProducts() {
-		return products;
+	
+
+	public Integer getAddressId() {
+		return addressId;
 	}
 
-	public void setProducts(Map<Product, Integer> products) {
-		this.products = products;
+	public void setAddressId(Integer addressId) {
+		this.addressId = addressId;
 	}
+
+	public Map<Product, Integer> getOrderedProducts() {
+		return orderedProducts;
+	}
+
+	public void setOrderedProducts(Map<Product, Integer> orderedProducts) {
+		this.orderedProducts = orderedProducts;
+	}
+
+	
 
 }
