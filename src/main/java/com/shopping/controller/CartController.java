@@ -37,8 +37,8 @@ public class CartController {
 	@Autowired
 	private LogInService logService;
 
-	@PostMapping("/{cartId}")
-	public ResponseEntity<Cart> addNewProduct(@PathVariable Integer cartId, @Valid @RequestBody Product p,
+	@PostMapping("/{cartId}/{quantity}")
+	public ResponseEntity<Cart> addNewProduct(@PathVariable("cartId") Integer cartId, @Valid @RequestBody Product p,
 			@PathVariable(value = "quantity") Integer quantity, @RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException, ProductException {
 
@@ -52,8 +52,8 @@ public class CartController {
 		return new ResponseEntity<Cart>(cc, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/products")
-	public ResponseEntity<Cart> removeProduct(@PathVariable Integer cartId, @RequestBody Product p,
+	@DeleteMapping("/products/{id}")
+	public ResponseEntity<Cart> removeProduct(@PathVariable("id") Integer cartId, @RequestBody Product p,
 			@RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException, ProductException {
 
@@ -68,7 +68,7 @@ public class CartController {
 	}
 
 	@PutMapping("/{quantity}")
-	public ResponseEntity<Cart> updateProductQuantity(@PathVariable Integer cartId, @RequestBody Product p,
+	public ResponseEntity<Cart> updateProductQuantity(@PathVariable("quantity") Integer cartId, @RequestBody Product p,
 			@PathVariable(value = "quantity") Integer quantity, @RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException, ProductException {
 
@@ -81,8 +81,8 @@ public class CartController {
 		return new ResponseEntity<Cart>(cc, HttpStatus.OK);
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Cart> removeAllProduct(@PathVariable Integer cartId, @RequestParam String uuid)
+	@DeleteMapping("{id}")
+	public ResponseEntity<Cart> removeAllProduct(@PathVariable("id") Integer cartId, @RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException {
 
 		if (!logService.loggedInOrNot(uuid))
@@ -96,7 +96,7 @@ public class CartController {
 	}
 
 	@GetMapping("/products/{cartId}")
-	public ResponseEntity<Map<Product, Integer>> viewAllProduct(@PathVariable Integer cartId, @RequestParam String uuid)
+	public ResponseEntity<Map<Product, Integer>> viewAllProduct(@PathVariable("cartId") Integer cartId, @RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException {
 
 		if (!logService.loggedInOrNot(uuid))
@@ -109,7 +109,7 @@ public class CartController {
 	}
 
 	@GetMapping("/{customerId}")
-	public ResponseEntity<Cart> getCartByCustomerId(@PathVariable Integer customerId, @RequestParam String uuid)
+	public ResponseEntity<Cart> getCartByCustomerId(@PathVariable("customerId") Integer customerId, @RequestParam String uuid)
 			throws LoginException, CartException, CustomerException {
 
 		if (!logService.loggedInOrNot(uuid))

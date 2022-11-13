@@ -33,7 +33,7 @@ public class CartServiceImpl implements CartService {
 		Optional<Cart> optional = cartDao.findById(c.getCartId());
 		if (!optional.isPresent())
 			throw new CartException("No Cart exits for adding this product");
-		p = productService.viewProduct(p.getProductId());
+//		p = productService.viewProduct(p.getProductId());
 		c.getProducts().put(p, quantity);
 		Cart cart = cartDao.save(c);
 
