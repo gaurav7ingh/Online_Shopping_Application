@@ -37,8 +37,8 @@ public class CartController {
 	@Autowired
 	private LogInService logService;
 
-	@PostMapping("/{cartId}")
-	public ResponseEntity<Cart> addNewProduct(@PathVariable Integer cartId, @Valid @RequestBody Product p,
+	@PostMapping("/{cartId}/{quantity}")
+	public ResponseEntity<Cart> addNewProduct(@PathVariable(value = "cartId") Integer cartId, @Valid @RequestBody Product p,
 			@PathVariable(value = "quantity") Integer quantity, @RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException, ProductException {
 
@@ -67,9 +67,9 @@ public class CartController {
 		return new ResponseEntity<Cart>(cc, HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/{quantity}")
-	public ResponseEntity<Cart> updateProductQuantity(@PathVariable Integer cartId, @RequestBody Product p,
-			@PathVariable(value = "quantity") Integer quantity, @RequestParam String uuid)
+	@PutMapping("/{cartId}")
+	public ResponseEntity<Cart> updateProductQuantity(@PathVariable("cartId") Integer cartId, @RequestBody Product p,
+			@RequestParam Integer quantity, @RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException, ProductException {
 
 		if (!logService.loggedInOrNot(uuid))
