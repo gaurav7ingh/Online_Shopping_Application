@@ -11,7 +11,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
+@Validated
 public class Product {
 
 	@Id
@@ -21,8 +26,9 @@ public class Product {
 	@NotNull
 	@NotEmpty
 	@NotBlank
-	private String ProductName;
+	private String productName;
 
+	@NotNull
 	@Min(value = 10)
 	private double price;
 
@@ -37,10 +43,14 @@ public class Product {
 
 	@Min(value = 1)
 	private Integer quantity;
-
+	
 	@NotNull
+	private String category;
+
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
-	private Category category;
+	private Category categorys;
+
 	
 
 	public Integer getProductId() {
@@ -52,11 +62,11 @@ public class Product {
 	}
 
 	public String getProductName() {
-		return ProductName;
+		return productName;
 	}
 
 	public void setProductName(String productName) {
-		ProductName = productName;
+		this.productName = productName;
 	}
 
 	public double getPrice() {
@@ -99,19 +109,27 @@ public class Product {
 		this.quantity = quantity;
 	}
 
-	public Category getCategory() {
+	public String getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public Category getCategorys() {
+		return categorys;
+	}
+
+	public void setCategorys(Category categorys) {
+		this.categorys = categorys;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ProductName == null) ? 0 : ProductName.hashCode());
+		result = prime * result + ((productName == null) ? 0 : productName.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(price);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -132,10 +150,10 @@ public class Product {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		if (ProductName == null) {
-			if (other.ProductName != null)
+		if (productName == null) {
+			if (other.productName != null)
 				return false;
-		} else if (!ProductName.equals(other.ProductName))
+		} else if (!productName.equals(other.productName))
 			return false;
 		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
 			return false;

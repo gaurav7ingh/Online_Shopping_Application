@@ -2,11 +2,10 @@ package com.shopping.service;
 
 import java.util.Optional;
 
-import javax.security.auth.login.LoginException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shopping.exception.LoginException;
 import com.shopping.exception.UserException;
 import com.shopping.model.CurrentUserSession;
 import com.shopping.model.User;
@@ -26,22 +25,20 @@ public class LoginServiceImpl implements LogInService {
 	private CurrentUserSessionRepo currRepo;
 
 	@Override
-	public User addUser(User user) throws UserException {
-		User existingUser = uRepo.findByemail(user.getEmail());
-
-		if (existingUser != null) {
-			throw new UserException("User Already loged in with Mobile number");
-		} else {
-			return uRepo.save(user);
-		}
+	public User addUser(User u) throws UserException {
+		User user = uRepo.findByEmail(u.getEmail());
+		if (!(user == null))
+			throw new UserException("User is already registerd");
+		user = uRepo.save(u);
+		return user;
 	}
 
 	@Override
 	public User removeUser(User user) throws UserException {
-		
-		User existingUser = uRepo.findByemail(user.getEmail());
 
-		if (existingUser != null) {
+		User existingUser = uRepo.findByEmail(user.getEmail());
+
+		if (existingUser == null) {
 			uRepo.delete(existingUser);
 			return existingUser;
 		} else {
@@ -52,7 +49,7 @@ public class LoginServiceImpl implements LogInService {
 	@Override
 	public String loginUser(UserDTO dto) throws UserException {
 
-		User existingUser = uRepo.findByemail(dto.getEmail());
+		User existingUser = uRepo.findByEmail(dto.getEmail());
 
 		if (existingUser == null) {
 			throw new UserException("Please Enter a valid email Id");
@@ -67,6 +64,11 @@ public class LoginServiceImpl implements LogInService {
 			String key = RandomString.make(6);
 
 			CurrentUserSession currentUserSession = new CurrentUserSession();
+			currentUserSession.setUserId(existingUser.getUserId());
+			currentUserSession.setRole(existingUser.getRole());
+			currentUserSession.setEmail(existingUser.getEmail());
+			currentUserSession.setUuid(key);
+
 			currRepo.save(currentUserSession);
 			return currentUserSession.toString();
 
@@ -77,7 +79,7 @@ public class LoginServiceImpl implements LogInService {
 
 	@Override
 	public String signOutUser(String key) throws UserException {
-		
+
 		CurrentUserSession validUserSession = currRepo.findByUuid(key);
 
 		if (validUserSession == null) {
@@ -90,9 +92,17 @@ public class LoginServiceImpl implements LogInService {
 	@Override
 	public boolean loggedInOrNot(String uuid) throws LoginException {
 		CurrentUserSession curr = currRepo.findByUuid(uuid);
-		if(curr == null)
-			return false;
+		if (curr == null)
+			throw new LoginException("user is not logged in");
 		return true;
+	}
+
+	@Override
+	public boolean adminOrNot(String uuid) throws UserException {
+		CurrentUserSession curr = currRepo.findByUuid(uuid);
+		if (curr.getRole().equalsIgnoreCase("admin"))
+			return true;
+		throw new UserException("You are not allowed...!");
 	}
 
 }

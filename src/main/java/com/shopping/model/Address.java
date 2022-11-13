@@ -13,11 +13,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.validation.annotation.Validated;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Validated
 public class Address {
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer addressId;
@@ -44,8 +48,8 @@ public class Address {
 	private String pincode;
 
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "customer_id")
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 
 	@Override

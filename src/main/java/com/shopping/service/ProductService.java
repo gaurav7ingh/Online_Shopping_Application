@@ -13,4 +13,5 @@ public interface ProductService {
 
 	public List<Product> viewProductByCategory(String cname) throws ProductException;
 
+	public List<Product> viewProductByProductName(String productName) throws ProductException;
 }

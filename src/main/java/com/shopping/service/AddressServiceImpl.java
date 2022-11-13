@@ -65,7 +65,8 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public Address removeAddress(Address a) throws AddressException {
-		Address add = addressDao.findById(a.getAddressId()).get();
+		Address add = addressDao.findById(a.getAddressId()).orElseThrow(()->new AddressException("Address Not found for deleting"));
+		
 		if (add == null)
 			throw new AddressException("Address Not found for deleting");
 

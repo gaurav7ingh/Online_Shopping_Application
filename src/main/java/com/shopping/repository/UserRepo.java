@@ -6,6 +6,6 @@ import com.shopping.model.User;
 
 public interface UserRepo extends JpaRepository<User, Integer>{
 
-	public User findByemail(String email);
+	public User findByEmail(String email);
 	
 }
