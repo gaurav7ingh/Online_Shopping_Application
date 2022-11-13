@@ -47,7 +47,7 @@ public class LoginServiceImpl implements LogInService {
 	}
 
 	@Override
-	public String loginUser(UserDTO dto) throws UserException {
+	public CurrentUserSession loginUser(UserDTO dto) throws UserException {
 
 		User existingUser = uRepo.findByEmail(dto.getEmail());
 
@@ -69,8 +69,8 @@ public class LoginServiceImpl implements LogInService {
 			currentUserSession.setEmail(existingUser.getEmail());
 			currentUserSession.setUuid(key);
 
-			currRepo.save(currentUserSession);
-			return currentUserSession.toString();
+			currentUserSession = currRepo.save(currentUserSession);
+			return currentUserSession;
 
 		} else {
 			throw new UserException("Please Enter a Valid Password");

@@ -7,12 +7,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shopping.exception.AddressException;
 import com.shopping.exception.CustomerException;
 import com.shopping.exception.OrderException;
 import com.shopping.exception.ProductException;
+import com.shopping.model.Address;
 import com.shopping.model.Customer;
 import com.shopping.model.Orders;
 import com.shopping.model.Product;
+import com.shopping.repository.AddressDao;
 import com.shopping.repository.CustomerRepo;
 import com.shopping.repository.OrderRepo;
 
@@ -25,8 +28,12 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private CustomerRepo cusomerRepo;
 
+	@Autowired
+	private AddressDao addressDao;
+
 	@Override
-	public Orders addOrders(Orders orders, Integer id,String location) throws OrderException, CustomerException, ProductException {
+	public Orders addOrders(Orders orders, Integer id, Integer location)
+			throws OrderException, CustomerException, ProductException, AddressException {
 
 		Customer customer = cusomerRepo.findById(id).get();
 		if (customer == null)
@@ -38,11 +45,13 @@ public class OrderServiceImpl implements OrderService {
 			throw new ProductException("No product found for order...!");
 
 		orders.setOrderDate(LocalDate.now());
-		orders.setProducts(products);
+		orders.getOrderedProducts().putAll(products);
 		orders.setCustomer(customer);
 		orders.setOrderStatus("open");
-		orders.setLocation(location);
-
+		Address add = addressDao.findById(location)
+				.orElseThrow(() -> new AddressException("Please provid the address id...!"));
+		orders.setAddressId(add.getAddressId());
+		orders.setLocation(add.getState());
 		Orders order = oRepo.save(orders);
 
 		return order;
@@ -53,11 +62,11 @@ public class OrderServiceImpl implements OrderService {
 		Orders order = oRepo.findById(orders.getOrderId())
 				.orElseThrow(() -> new OrderException("No orders found for update"));
 
-		if (order.getOrderStatus().equals("open"))
+		if (order.getOrderStatus().equalsIgnoreCase("open"))
 			order.setOrderStatus("cancelled");
-		if (order.getOrderStatus().equals("cancelled"))
+		else if (order.getOrderStatus().equalsIgnoreCase("cancelled"))
 			throw new OrderException("This order is already cancelled");
-		if (order.getOrderStatus().equals("placed"))
+		else if (order.getOrderStatus().equalsIgnoreCase("placed"))
 			throw new OrderException("Order is reached to the destination \n we can't update it");
 
 		Orders newOrder = oRepo.save(order);

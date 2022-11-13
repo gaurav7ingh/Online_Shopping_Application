@@ -53,7 +53,7 @@ public class CartController {
 	}
 
 	@DeleteMapping("/products")
-	public ResponseEntity<Cart> removeProduct(@PathVariable Integer cartId, @RequestBody Product p,
+	public ResponseEntity<Cart> removeProduct(@RequestParam Integer cartId, @RequestBody Product p,
 			@RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException, ProductException {
 
@@ -81,8 +81,8 @@ public class CartController {
 		return new ResponseEntity<Cart>(cc, HttpStatus.OK);
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Cart> removeAllProduct(@PathVariable Integer cartId, @RequestParam String uuid)
+	@DeleteMapping("/{cartId}")
+	public ResponseEntity<Cart> removeAllProduct(@PathVariable("cartId") Integer cartId, @RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException {
 
 		if (!logService.loggedInOrNot(uuid))

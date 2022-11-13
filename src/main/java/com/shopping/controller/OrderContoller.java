@@ -1,6 +1,7 @@
 package com.shopping.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shopping.exception.AddressException;
 import com.shopping.exception.CustomerException;
 import com.shopping.exception.LoginException;
 import com.shopping.exception.OrderException;
@@ -37,65 +39,72 @@ public class OrderContoller {
 	private LogInService logService;
 
 	@PostMapping
-	public ResponseEntity<Orders> addOrderHandler(@Valid @RequestBody Orders orders, @RequestParam(required = true) Integer id,
-			@RequestParam(required = true) String location, @RequestParam(required = true) String uuid)
-			throws OrderException, CustomerException, ProductException, LoginException {
-		
+	public ResponseEntity<Orders> addOrderHandler(@Valid @RequestBody Orders orders,
+			@RequestParam(required = true) Integer customerId, @RequestParam(required = true) Integer addressId,
+			@RequestParam(required = true) String uuid)
+			throws OrderException, CustomerException, ProductException, LoginException, AddressException {
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
 
-		Orders order = oSer.addOrders(orders, id, location);
+		Orders order = oSer.addOrders(orders, customerId, addressId);
 
-		return new ResponseEntity<>(order, HttpStatus.ACCEPTED);
+		return new ResponseEntity<Orders>(order, HttpStatus.ACCEPTED);
 	}
 
 	@PutMapping
-	public ResponseEntity<Orders> updateOrderHandler(@RequestBody Orders orders,
+	public ResponseEntity<Orders> updateOrderHandler(@RequestParam Integer orderId,
 			@RequestParam(required = true) String uuid)
 			throws OrderException, CustomerException, ProductException, LoginException {
-		
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
 
-		Orders order = oSer.updateOrders(orders);
+		Orders order = oSer.viewOrder(orderId);
+		order = oSer.updateOrders(order);
 
 		return new ResponseEntity<>(order, HttpStatus.ACCEPTED);
 	}
 
 	@DeleteMapping
-	public ResponseEntity<Orders> removeOrderHandler(@RequestBody Orders orders,
+	public ResponseEntity<Orders> removeOrderHandler(@RequestParam Integer orderId,
 			@RequestParam(required = true) String uuid)
 			throws OrderException, CustomerException, ProductException, LoginException {
-		
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
 
-		Orders order = oSer.removeOrder(orders);
+		Orders order = oSer.viewOrder(orderId);
+		order = oSer.removeOrder(order);
 
 		return new ResponseEntity<>(order, HttpStatus.FOUND);
 	}
 
-	@GetMapping("/{orderId}")
-	public ResponseEntity<Orders> viewOrderHandler(@PathVariable Integer ordersId,
+	@GetMapping
+	public ResponseEntity<Orders> viewOrderHandler(@RequestParam Integer ordersId,
 			@RequestParam(required = true) String uuid)
 			throws OrderException, CustomerException, ProductException, LoginException {
-		
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
-		
+
 		Orders order = oSer.viewOrder(ordersId);
 
 		return new ResponseEntity<>(order, HttpStatus.FOUND);
 	}
 
-	@GetMapping("/dates/{date}")
-	public ResponseEntity<List<Orders>> viewAllOrderHandler(@PathVariable(value = "date") LocalDate date,
+	@GetMapping("/dates/{dd-MM-yyyy}")
+	public ResponseEntity<List<Orders>> viewAllOrderHandler(@PathVariable("dd-MM-yyyy") String date,
 			@RequestParam String uuid) throws OrderException, CustomerException, ProductException, LoginException {
-		
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
 
-		List<Orders> orders = oSer.viewAllOrders(date);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");
+
+		LocalDate localDate = LocalDate.parse(date, formatter);
+
+		List<Orders> orders = oSer.viewAllOrders(localDate);
 
 		return new ResponseEntity<>(orders, HttpStatus.FOUND);
 	}
@@ -103,7 +112,7 @@ public class OrderContoller {
 	@GetMapping("/customers/{customerId}")
 	public ResponseEntity<List<Orders>> viewAllOrderByIDHandler(@PathVariable(value = "customerId") Integer customerId,
 			@RequestParam String uuid) throws OrderException, CustomerException, ProductException, LoginException {
-		
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
 
