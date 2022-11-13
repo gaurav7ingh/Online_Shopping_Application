@@ -50,7 +50,7 @@ public class Customer {
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "customer")
 	private Set<Address> addresses = new HashSet<>();
 
-//	@JsonIgnore
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cart_id")
 	private Cart cart = new Cart();
