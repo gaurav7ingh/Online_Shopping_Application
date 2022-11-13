@@ -39,6 +39,7 @@ public class AdminServiceImpl implements AdminService {
 				product.setCategorys(category);
 			} else {
 				existingCategory.getProducts().add(product);
+				product.setCategorys(existingCategory);
 			}
 			Product savedProduct = prodRepo.save(product);
 
