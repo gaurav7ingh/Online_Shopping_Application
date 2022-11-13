@@ -30,13 +30,13 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public Cart addProductToCart(Cart c, Product p, Integer quantity) throws CartException, ProductException {
-		Optional<Cart> optional = cartDao.findById(c.getCartId());
-		if (!optional.isPresent())
+		if(c==null)
 			throw new CartException("No Cart exits for adding this product");
 		p = productService.viewProduct(p.getProductId());
 		c.getProducts().put(p, quantity);
+		
 		Cart cart = cartDao.save(c);
-
+		
 		return cart;
 	}
 
@@ -69,12 +69,7 @@ public class CartServiceImpl implements CartService {
 			Cart cs = optional.get();
 			
 			p = productService.viewProduct(p.getProductId());
-			
-			Integer value = cs.getProducts().get(p);
-
-			value = value + quantity;
-
-			cs.getProducts().put(p, value);
+			cs.getProducts().put(p, quantity);
 
 			Cart cart = cartDao.save(cs);
 			return cart;

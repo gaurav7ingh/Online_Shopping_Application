@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,8 +23,7 @@ public class Cart {
 	private Integer cartId;
 
 
-	@JsonIgnore
-	@OneToMany(targetEntity = Product.class, cascade = CascadeType.ALL)
+	@ElementCollection
 	private Map<Product, Integer> Products = new HashMap<>();
 
 
