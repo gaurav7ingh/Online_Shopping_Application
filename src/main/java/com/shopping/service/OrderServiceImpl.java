@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.criteria.Order;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -80,8 +78,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders viewOrder(Orders orders) throws OrderException {
-		Orders order = oRepo.findById(orders.getOrderId()).orElseThrow(() -> new OrderException("No order found...!"));
+	public Orders viewOrder(Integer ordersId) throws OrderException {
+		Orders order = oRepo.findById(ordersId).orElseThrow(() -> new OrderException("No order found...!"));
 		return order;
 	}
 

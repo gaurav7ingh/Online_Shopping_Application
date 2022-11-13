@@ -2,9 +2,10 @@ package com.shopping.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.shopping.exception.ProductException;
 import com.shopping.model.Category;
 import com.shopping.model.Product;
@@ -31,9 +32,6 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 
-	
-
-	
 	@Override
 	public Product viewProduct(Integer id) throws ProductException {
 
@@ -62,6 +60,12 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
-	
+	@Override
+	public List<Product> viewProductByProductName(String productName) throws ProductException {
+		List<Product> products = prodRepo.findByProductName(productName);
+		if(products.isEmpty())
+			throw new ProductException("No product found with this name");
+		return products;
+	}
 
 }

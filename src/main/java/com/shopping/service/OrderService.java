@@ -16,7 +16,7 @@ public interface OrderService {
 	
 	public Orders removeOrder(Orders orders) throws OrderException;
 	
-	public Orders viewOrder(Orders orders) throws OrderException;
+	public Orders viewOrder(Integer ordersId) throws OrderException;
 	
 	public List<Orders> viewAllOrders(LocalDate date) throws OrderException;
 	

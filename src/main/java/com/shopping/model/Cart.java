@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 
 import org.springframework.context.annotation.Bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Cart {
 
@@ -20,6 +22,7 @@ public class Cart {
 	private Integer cartId;
 
 
+	@JsonIgnore
 	@OneToMany(targetEntity = Product.class, cascade = CascadeType.ALL)
 	private Map<Product, Integer> Products = new HashMap<>();
 

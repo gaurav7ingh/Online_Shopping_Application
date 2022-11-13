@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -18,14 +16,16 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.validation.annotation.Validated;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Validated
 public class Customer {
 
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer customerId;
 
 	@NotNull
@@ -45,11 +45,12 @@ public class Customer {
 	@NotNull(message = "please provide the email...!")
 	@Column(unique = true)
 	private String email;
+	
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "customer")
 	private Set<Address> addresses = new HashSet<>();
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cart_id")
 	private Cart cart = new Cart();
@@ -57,6 +58,7 @@ public class Customer {
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
 	private List<Orders> orders = new ArrayList<>();
+	
 
 	public Integer getCustomerId() {
 		return customerId;
@@ -106,6 +108,7 @@ public class Customer {
 		this.addresses = addresses;
 	}
 
+	
 	public Cart getCart() {
 		return cart;
 	}

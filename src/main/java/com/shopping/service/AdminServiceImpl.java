@@ -1,13 +1,17 @@
 package com.shopping.service;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.shopping.exception.ProductException;
 import com.shopping.model.Category;
 import com.shopping.model.Product;
 import com.shopping.repository.CategoryRepo;
 import com.shopping.repository.ProductRepo;
 
+@Service
 public class AdminServiceImpl implements AdminService {
 
 	@Autowired
@@ -18,18 +22,21 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Product addProduct(Product product) throws ProductException {
+		Optional<Product> opt = null;
+        if(product.getProductId()!=null)
+        	opt = prodRepo.findById(product.getProductId());
 
-		Optional<Product> opt = prodRepo.findById(product.getProductId());
-
-		if (opt.isPresent()) {
+		if (opt != null && opt.isPresent()) {
 			throw new ProductException("Product Already Registered!.......");
 		} else {
-			String categoryName = product.getCategory().getCategory();
+			String categoryName = product.getCategory();
 			Category existingCategory = cRepo.findByCategory(categoryName);
 			if (existingCategory == null) {
 				Category category = new Category();
 				category.setCategory(categoryName);
 				category.getProducts().add(product);
+				category = cRepo.save(category);
+				product.setCategorys(category);
 			} else {
 				existingCategory.getProducts().add(product);
 			}
