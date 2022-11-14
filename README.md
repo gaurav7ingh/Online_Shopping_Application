@@ -1,9 +1,6 @@
 
 
-# REST API for an Online Shopping Application (GetAll.com)
-
-<img src="https://user-images.githubusercontent.com/101389007/201760809-ffb81fe1-271e-48bd-befa-0d2b56bab7f9.jpg">
-
+# REST API for an Online Shopping Application
 
 * This application is used by GetAll.com admin and their Customer for online shopping 
 * This application will help Customer to buy the products and view order details.
