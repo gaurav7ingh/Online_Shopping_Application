@@ -1,11 +1,16 @@
-# REST API for an Online Shopping Application
+
+
+# REST API for an Online Shopping Application (GetAll.com)
+
+<img src="https://user-images.githubusercontent.com/101389007/201760809-ffb81fe1-271e-48bd-befa-0d2b56bab7f9.jpg">
+
 
 * This application is used by ABC Company admin and their Customer for online shopping 
 * This application will help Customer to buy the products and view order details.
 * Customer can register themselves and login. Add product to the cart and purchase it .
 * This application will help Admin to search Product list ,add new products ,remove products and update product .
 
-* This project is developed by team of 6 Back-end Developers during project week in Masai School. 
+* This project is developed by team of 4 Back-end Developers during project week in Masai School. 
 
 ## Tech Stack
 
@@ -20,7 +25,7 @@
 
 ## Modules
 
-* Login Module
+*  Login Module
 *	Customer Module
 *	Product Module
 *	Order Module
@@ -34,52 +39,48 @@
     * Admin to search Product list ,add new products ,remove products and update product .
 * Customer Features:
     * A user can register himself or herself on the platform.
-    * He/She can check the vaccine centres and vaccine availabilty.
-    * If vaccine is available, can book an appointment slot.
-    * After booking an appointment, he will get appointment details for the vaccine dose.    
+    * He/She can check the products item and product Category.
+    * If Product is available Customer can add the product to Cart.
+    * After adding to the cart if the customer want He/She can also cancel the order or place the order.    
 
 
 ## Contributors
 
-* [@Micheal George](https://github.com/Micheal-George)
-* [@Shivam Maheshwari](https://github.com/shivamgarg796)
-* [@Avinash Kumar](https://github.com/avinash-here)
-* [@Gaurav Singh](https://github.com/GauravSinghh)
-* [@Md Farhan Nawaz](https://github.com/nvFARHAN)
-* [@Moh Shahrukh Khan](https://github.com/MohShahrukhKhan)
+* [@Gaurav Singh](https://github.com/gaurav7ingh)
+* [@Samrat Sinha](https://github.com/Samrat-Sinha)
+* [@Kunal Chandel](https://github.com/kunalchandel4)
+* [@Himansu Pokhariya](https://github.com/believerHSP)
+
 
 
 
 ## Installation & Run
 
-* Before running the API server, you should update the database config inside the [application.properties](https://github.com/nvFARHAN/cowin.gov.in/blob/master/src/main/resources/application.properties) file. 
+* Before running the API server, you should update the database config inside the [application.properties](https://github.com/gaurav7ingh/light-temper-9603/blob/main/src/main/java/com/shopping/OnlineShoppingApplication.java) file. 
 * Update the port number, username and password as per your local database config.
 
 ```
-    server.port=8080
+    server.port=8888
 
-    spring.datasource.url=jdbc:mysql://localhost:3306/cowin;
-    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-    spring.datasource.username=root
-    spring.datasource.password=root
+spring.datasource.url=jdbc:mysql://localhost:3306/online_shopping_application
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=root
+spring.datasource.password=root
 
 ```
 
-## AWS Deployed link
-`http://covidvaccinerestapi-env.eba-bt8ve3ux.ap-south-1.elasticbeanstalk.com/swagger-ui/#/`
+## Swagger Deployed link
+http://localhost:8888/swagger-ui/
 
 ## API Root Endpoint
 
-`https://localhost:8080/`
-
-`http://localhost:8080/swagger-ui/`
-
+`https://localhost:8888/`
 
 ## API Module Endpoints
 
 ### Login Module
 
-* `POST //api/adminlogin` : Admin can login with mobile number and password provided at the time of registation
+* `POST /log-in-log-out-controller` : User can login with email and password provided at the time of registation
 <!--
 ### User Module
 
@@ -111,33 +112,27 @@
 * `DELETE /admin/delete` : Deletes the admin with passed id   -->
 
 
-### Sample API Response for Admin Login
+### Sample API Response for User Login
 
-`POST   localhost:8080/login/adminlogin`
+`POST   localhost:8888/login`
 
 * Request Body
 
 ```
     {
-        "mobileNo": "7056319981",
-        "password": "Clickme@007"
+        "email": "samrat@gmail.com",
+        "password": "swagger"
     }
 ```
 
-* Response
-
-```
-   CurrentAdminSession(id=11, adminId=10, uuid=ZaVLaK, localDateTime=2022-08-17T11:13:42.772910500)
-   
-```
-
 ## Video Explainer of flow control
- <a href="https://drive.google.com/file/d/1ReDNdgIxdSNcn7WsV2ysIHeXEnkgZErw/view?usp=sharing">**Video Drive Link** </a>
+ <a href="https://drive.google.com/file/d/1CTeKQ8u9vowsjTv0TV98B15g8E4zcFCr/view">**Video Drive Link** </a>
  
  
-### E-R Diagram Of Covid-19 Application
+### E-R Diagram Of Online Shopping Application
 ---
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/Er-Diagram.jpeg?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+
+<img src="https://user-images.githubusercontent.com/101389007/201763374-2ffeef8f-f5fe-4507-858a-d5f60106527e.png">
 
 ---
 
@@ -145,7 +140,7 @@
 
 ---
 
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/Swagger-ui.jpeg?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+<img src="https://user-images.githubusercontent.com/101389007/201761270-ec0b67cb-af65-43cc-9889-aa174bbe9306.png">
 
 ---
 
@@ -153,7 +148,7 @@
 
 ---
 
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/Login.png?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+<img src="https://user-images.githubusercontent.com/101389007/201761609-681b6800-58ab-4752-a290-0bc86453deed.png">
 
 ---
 
@@ -161,26 +156,41 @@
 
 ---
 
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/Admin-Controller.jpeg?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+<img src="https://user-images.githubusercontent.com/101389007/201761822-e6854f0c-b8b4-45c2-9fdf-b42356331457.png">
+
 
 ---
 
-### User Controller
+### Customer Controller
 
 ---
 
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/User.png?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+<img src="https://user-images.githubusercontent.com/101389007/201761970-801bae9f-abc2-4a89-9b6b-9fad26aafae6.png">
 
 ---
 
-### Model Controller
+### Products Controller
 
 ---
 
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/mODELS.png?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+<img src="https://user-images.githubusercontent.com/101389007/201762833-4fb18ea0-6022-42f8-b800-4d873fbc95fa.png">
 
 ---
 
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/Thank-you-word-cloud.jpg?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+### Cart Controller
 
 ---
+
+<img src="https://user-images.githubusercontent.com/101389007/201763006-a22ebaea-0884-40b0-8bf5-c3b3342cd6d1.png">
+
+---
+
+### Order Controller
+
+---
+
+<img src="https://user-images.githubusercontent.com/101389007/201763169-cf85b90d-58fc-48cc-abf0-88ae9d3e56a2.png">
+
+---
+
+## Thank You for Visiting
