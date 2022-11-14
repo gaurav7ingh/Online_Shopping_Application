@@ -18,25 +18,24 @@ import com.shopping.service.LogInService;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	
+
 	@Autowired
 	private LogInService logService;
 
 	@PostMapping
 	public ResponseEntity<User> addUserHandler(@Valid @RequestBody User user) throws UserException {
-		
+
 		User saveduser = logService.addUser(user);
-		
-		return new ResponseEntity<User>(saveduser, HttpStatus.CREATED);
+
+		return new ResponseEntity<>(saveduser, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping
 	public ResponseEntity<User> deleteUserHandler(@RequestBody User user) throws UserException {
-		
+
 		User deleteuser = logService.removeUser(user);
-		
-		return new ResponseEntity<User>(deleteuser, HttpStatus.ACCEPTED);
+
+		return new ResponseEntity<>(deleteuser, HttpStatus.ACCEPTED);
 	}
 
-	
 }

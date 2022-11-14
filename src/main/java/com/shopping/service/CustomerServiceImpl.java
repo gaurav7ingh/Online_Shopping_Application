@@ -35,27 +35,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 		cust.setCustomerId(user.getUserId());
 		Customer savedCustomer = custRepo.save(cust);
-		
+
 		return savedCustomer;
 
-	}
-
-	@Override
-	public Customer updateCustomer(Customer cust) throws CustomerException {
-		Optional<Customer> optional = custRepo.findById(cust.getCustomerId());
-		if (!optional.isPresent())
-			throw new CustomerException("No customer exists with this information");
-
-		User user = userRepo.findById(cust.getCustomerId()).orElseThrow(()->new CustomerException("No user exist please add this user first"));
-		
-		if(cust.getEmail() != user.getEmail()) {
-			user.setEmail(cust.getEmail());
-			userRepo.save(user);
-		}
-		Customer customer = custRepo.save(cust);
-		if (customer == null)
-			throw new CustomerException("customer not updated");
-		return customer;
 	}
 
 	@Override
@@ -68,11 +50,22 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customer viewCustomer(Integer customerId) throws CustomerException {
-		Optional<Customer> optional = custRepo.findById(customerId);
+	public Customer updateCustomer(Customer cust) throws CustomerException {
+		Optional<Customer> optional = custRepo.findById(cust.getCustomerId());
 		if (!optional.isPresent())
-			throw new CustomerException("Customer not found");
-		return optional.get();
+			throw new CustomerException("No customer exists with this information");
+
+		User user = userRepo.findById(cust.getCustomerId())
+				.orElseThrow(() -> new CustomerException("No user exist please add this user first"));
+
+		if (cust.getEmail() != user.getEmail()) {
+			user.setEmail(cust.getEmail());
+			userRepo.save(user);
+		}
+		Customer customer = custRepo.save(cust);
+		if (customer == null)
+			throw new CustomerException("customer not updated");
+		return customer;
 	}
 
 	@Override
@@ -85,6 +78,14 @@ public class CustomerServiceImpl implements CustomerService {
 			return viewAllCust;
 		}
 
+	}
+
+	@Override
+	public Customer viewCustomer(Integer customerId) throws CustomerException {
+		Optional<Customer> optional = custRepo.findById(customerId);
+		if (!optional.isPresent())
+			throw new CustomerException("Customer not found");
+		return optional.get();
 	}
 
 }

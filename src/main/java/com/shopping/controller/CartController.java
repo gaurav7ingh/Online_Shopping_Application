@@ -38,8 +38,9 @@ public class CartController {
 	private LogInService logService;
 
 	@PostMapping("/{cartId}/{quantity}")
-	public ResponseEntity<Cart> addNewProduct(@PathVariable(value = "cartId") Integer cartId, @Valid @RequestBody Product p,
-			@PathVariable(value = "quantity") Integer quantity, @RequestParam String uuid)
+	public ResponseEntity<Cart> addNewProduct(@PathVariable(value = "cartId") Integer cartId,
+			@Valid @RequestBody Product p, @PathVariable(value = "quantity") Integer quantity,
+			@RequestParam String uuid)
 			throws AddressException, CustomerException, CartException, LoginException, ProductException {
 
 		if (!logService.loggedInOrNot(uuid))
@@ -49,7 +50,33 @@ public class CartController {
 
 		Cart cc = cSer.addProductToCart(cart, p, quantity);
 
-		return new ResponseEntity<Cart>(cc, HttpStatus.OK);
+		return new ResponseEntity<>(cc, HttpStatus.OK);
+	}
+
+	@GetMapping("/{customerId}")
+	public ResponseEntity<Cart> getCartByCustomerId(@PathVariable Integer customerId, @RequestParam String uuid)
+			throws LoginException, CartException, CustomerException {
+
+		if (!logService.loggedInOrNot(uuid))
+			throw new LoginException("This user is not logged in");
+
+		Cart cart = cSer.getCartByCustomerId(customerId);
+
+		return new ResponseEntity<>(cart, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{cartId}")
+	public ResponseEntity<Cart> removeAllProduct(@PathVariable("cartId") Integer cartId, @RequestParam String uuid)
+			throws AddressException, CustomerException, CartException, LoginException {
+
+		if (!logService.loggedInOrNot(uuid))
+			throw new LoginException("This user is not logged in");
+
+		Cart cart = cSer.getCartById(cartId);
+
+		Cart cc = cSer.removeAllProduct(cart);
+
+		return new ResponseEntity<>(cc, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/products")
@@ -64,7 +91,7 @@ public class CartController {
 
 		Cart cc = cSer.removeProductFromCart(cart, p);
 
-		return new ResponseEntity<Cart>(cc, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(cc, HttpStatus.ACCEPTED);
 	}
 
 	@PutMapping("/{cartId}")
@@ -78,21 +105,7 @@ public class CartController {
 		Cart cart = cSer.getCartById(cartId);
 
 		Cart cc = cSer.updateProductQuantity(cart, p, quantity);
-		return new ResponseEntity<Cart>(cc, HttpStatus.OK);
-	}
-
-	@DeleteMapping("/{cartId}")
-	public ResponseEntity<Cart> removeAllProduct(@PathVariable("cartId") Integer cartId, @RequestParam String uuid)
-			throws AddressException, CustomerException, CartException, LoginException {
-
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
-
-		Cart cart = cSer.getCartById(cartId);
-
-		Cart cc = cSer.removeAllProduct(cart);
-
-		return new ResponseEntity<Cart>(cc, HttpStatus.OK);
+		return new ResponseEntity<>(cc, HttpStatus.OK);
 	}
 
 	@GetMapping("/products/{cartId}")
@@ -105,19 +118,7 @@ public class CartController {
 		Cart cart = cSer.getCartById(cartId);
 
 		Map<Product, Integer> map = cSer.viewAllProduct(cart);
-		return new ResponseEntity<Map<Product, Integer>>(map, HttpStatus.OK);
-	}
-
-	@GetMapping("/{customerId}")
-	public ResponseEntity<Cart> getCartByCustomerId(@PathVariable Integer customerId, @RequestParam String uuid)
-			throws LoginException, CartException, CustomerException {
-
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
-
-		Cart cart = cSer.getCartByCustomerId(customerId);
-
-		return new ResponseEntity<Cart>(cart, HttpStatus.OK);
+		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
 }

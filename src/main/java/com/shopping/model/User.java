@@ -25,47 +25,47 @@ public class User {
 	@NotNull(message = "please provide the email...!")
 	@Column(unique = true)
 	private String email;
-	
+
 	@NotNull
 	@NotBlank
 	@NotEmpty
-	@Size(min = 6,max = 15, message = "the password length is not apropriate")
+	@Size(min = 6, max = 15, message = "the password length is not apropriate")
 	private String password;
 
 	@NotNull
-	@Size(min = 5,max = 8, message =  "please privide role (admin or customer)")
+	@Size(min = 5, max = 8, message = "please privide role (admin or customer)")
 	private String role;
 
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public String getEmail() {
+		return email;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getRole() {
 		return role;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public void setRole(String role) {
 		this.role = role;
 	}
 
-	public String getEmail() {
-		return email;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 }

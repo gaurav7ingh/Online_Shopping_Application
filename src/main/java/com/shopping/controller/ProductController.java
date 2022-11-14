@@ -41,6 +41,18 @@ public class ProductController {
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 
+	@GetMapping("/categorys/{category}")
+	public ResponseEntity<List<Product>> viewProductByCategoryHandler(@PathParam(value = "category") String category,
+			@RequestParam String uuid) throws LoginException, ProductException {
+
+		if (!logService.loggedInOrNot(uuid))
+			throw new LoginException("This user is not logged in");
+
+		List<Product> products = productService.viewProductByCategory(category);
+
+		return new ResponseEntity<>(products, HttpStatus.OK);
+	}
+
 	@GetMapping("/names/{productName}")
 	public ResponseEntity<List<Product>> viewProductByNameHandler(@PathParam(value = "productName") String productName,
 			@RequestParam String uuid) throws LoginException, ProductException {
@@ -50,7 +62,7 @@ public class ProductController {
 
 		List<Product> products = productService.viewProductByProductName(productName);
 
-		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 
 	@GetMapping("/{productId}")
@@ -62,19 +74,7 @@ public class ProductController {
 
 		Product p = productService.viewProduct(productId);
 
-		return new ResponseEntity<Product>(p, HttpStatus.OK);
-	}
-
-	@GetMapping("/categorys/{category}")
-	public ResponseEntity<List<Product>> viewProductByCategoryHandler(@PathParam(value = "category") String category,
-			@RequestParam String uuid) throws LoginException, ProductException {
-
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
-
-		List<Product> products = productService.viewProductByCategory(category);
-
-		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+		return new ResponseEntity<>(p, HttpStatus.OK);
 	}
 
 }

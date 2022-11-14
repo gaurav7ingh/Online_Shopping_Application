@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Validated
 public class Customer {
 
-	
 	@Id
 	private Integer customerId;
 
@@ -45,9 +44,8 @@ public class Customer {
 	@NotNull(message = "please provide the email...!")
 	@Column(unique = true)
 	private String email;
-	
 
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "customer")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
 	private Set<Address> addresses = new HashSet<>();
 
 	@JsonIgnore
@@ -58,73 +56,69 @@ public class Customer {
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
 	private List<Orders> orders = new ArrayList<>();
-	
+
+	public Set<Address> getAddresses() {
+		return addresses;
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
 
 	public Integer getCustomerId() {
 		return customerId;
-	}
-
-	public void setCustomerId(Integer customerId) {
-		this.customerId = customerId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public Set<Address> getAddresses() {
-		return addresses;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setAddresses(Set<Address> addresses) {
-		this.addresses = addresses;
-	}
-
-	
-	public Cart getCart() {
-		return cart;
-	}
-
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public String getMobileNumber() {
+		return mobileNumber;
 	}
 
 	public List<Orders> getOrders() {
 		return orders;
 	}
 
+	public void setAddresses(Set<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
 	public void setOrders(List<Orders> orders) {
 		this.orders = orders;
 	}
-	
-	
 
 }

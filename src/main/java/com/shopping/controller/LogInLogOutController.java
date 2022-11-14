@@ -18,7 +18,7 @@ import com.shopping.service.LogInService;
 
 @RestController
 public class LogInLogOutController {
-	
+
 	@Autowired
 	private LogInService logService;
 
@@ -26,15 +26,15 @@ public class LogInLogOutController {
 	public ResponseEntity<CurrentUserSession> logInHandler(@Valid @RequestBody UserDTO dto) throws UserException {
 		CurrentUserSession result = logService.loginUser(dto);
 
-		return new ResponseEntity<CurrentUserSession>(result, HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@GetMapping("/logout")
 	public ResponseEntity<String> logoutuserHandler(@RequestParam String uuid) throws UserException {
-		
+
 		String log = logService.signOutUser(uuid);
-		
-		return new ResponseEntity<String>(log, HttpStatus.OK);
+
+		return new ResponseEntity<>(log, HttpStatus.OK);
 	}
 
 }

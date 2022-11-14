@@ -6,7 +6,7 @@ import com.shopping.exception.ProductException;
 import com.shopping.model.Product;
 
 public interface ProductService {
-	
+
 	public List<Product> viewAllProducts() throws ProductException;
 
 	public Product viewProduct(Integer id) throws ProductException;

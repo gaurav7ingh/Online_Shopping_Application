@@ -58,22 +58,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders updateOrders(Orders orders) throws OrderException {
-		Orders order = oRepo.findById(orders.getOrderId())
-				.orElseThrow(() -> new OrderException("No orders found for update"));
-
-		if (order.getOrderStatus().equalsIgnoreCase("open"))
-			order.setOrderStatus("cancelled");
-		else if (order.getOrderStatus().equalsIgnoreCase("cancelled"))
-			throw new OrderException("This order is already cancelled");
-		else if (order.getOrderStatus().equalsIgnoreCase("placed"))
-			throw new OrderException("Order is reached to the destination \n we can't update it");
-
-		Orders newOrder = oRepo.save(order);
-		return newOrder;
-	}
-
-	@Override
 	public Orders removeOrder(Orders orders) throws OrderException {
 		Orders order = oRepo.findById(orders.getOrderId())
 				.orElseThrow(() -> new OrderException("No orders found for undo"));
@@ -87,9 +71,19 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders viewOrder(Integer ordersId) throws OrderException {
-		Orders order = oRepo.findById(ordersId).orElseThrow(() -> new OrderException("No order found...!"));
-		return order;
+	public Orders updateOrders(Orders orders) throws OrderException {
+		Orders order = oRepo.findById(orders.getOrderId())
+				.orElseThrow(() -> new OrderException("No orders found for update"));
+
+		if (order.getOrderStatus().equalsIgnoreCase("open"))
+			order.setOrderStatus("cancelled");
+		else if (order.getOrderStatus().equalsIgnoreCase("cancelled"))
+			throw new OrderException("This order is already cancelled");
+		else if (order.getOrderStatus().equalsIgnoreCase("placed"))
+			throw new OrderException("Order is reached to the destination \n we can't update it");
+
+		Orders newOrder = oRepo.save(order);
+		return newOrder;
 	}
 
 	@Override
@@ -116,6 +110,12 @@ public class OrderServiceImpl implements OrderService {
 		if (orders.isEmpty())
 			throw new OrderException("No order found for this customer...!");
 		return orders;
+	}
+
+	@Override
+	public Orders viewOrder(Integer ordersId) throws OrderException {
+		Orders order = oRepo.findById(ordersId).orElseThrow(() -> new OrderException("No order found...!"));
+		return order;
 	}
 
 }

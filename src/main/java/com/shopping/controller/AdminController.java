@@ -30,52 +30,53 @@ public class AdminController {
 
 	@Autowired
 	private LogInService logService;
-	
+
 	@PostMapping
-	public ResponseEntity<Product> addProductHandler(@Valid @RequestBody Product product, @RequestParam String uuid) throws ProductException, LoginException, UserException{
-		
+	public ResponseEntity<Product> addProductHandler(@Valid @RequestBody Product product, @RequestParam String uuid)
+			throws ProductException, LoginException, UserException {
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
-		
-		if(!logService.adminOrNot(uuid))
+
+		if (!logService.adminOrNot(uuid))
 			throw new UserException("You are not allowed to add the product...!");
 
-		
 		Product p = adminService.addProduct(product);
-		
-		return new ResponseEntity<Product>(p,HttpStatus.CREATED);
-		
-	}
-	
-	@PutMapping
-	public ResponseEntity<Product> updateProductHandler(@RequestBody Product product, @RequestParam String uuid) throws ProductException, LoginException, UserException{
-		
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
-		
-		if(!logService.adminOrNot(uuid))
-			throw new UserException("You are not allowed to update the product...!");
 
-		Product p = adminService.updateProduct(product);
-		
-		return new ResponseEntity<Product>(p,HttpStatus.CREATED);
-		
+		return new ResponseEntity<>(p, HttpStatus.CREATED);
+
 	}
-	
+
 	@DeleteMapping("/{productId}")
-	public ResponseEntity<Product> removeProductHandler(@PathVariable("productId") Integer productId, @RequestParam String uuid) throws ProductException, LoginException, UserException{
-		
+	public ResponseEntity<Product> removeProductHandler(@PathVariable("productId") Integer productId,
+			@RequestParam String uuid) throws ProductException, LoginException, UserException {
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
-		
-		if(!logService.adminOrNot(uuid))
+
+		if (!logService.adminOrNot(uuid))
 			throw new UserException("You are not allowed to Remove the product...!");
 
 		Product p = adminService.removeProduct(productId);
-		
-		return new ResponseEntity<Product>(p,HttpStatus.CREATED);
-		
+
+		return new ResponseEntity<>(p, HttpStatus.CREATED);
+
 	}
-		
-	
+
+	@PutMapping
+	public ResponseEntity<Product> updateProductHandler(@RequestBody Product product, @RequestParam String uuid)
+			throws ProductException, LoginException, UserException {
+
+		if (!logService.loggedInOrNot(uuid))
+			throw new LoginException("This user is not logged in");
+
+		if (!logService.adminOrNot(uuid))
+			throw new UserException("You are not allowed to update the product...!");
+
+		Product p = adminService.updateProduct(product);
+
+		return new ResponseEntity<>(p, HttpStatus.CREATED);
+
+	}
+
 }

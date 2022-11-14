@@ -10,13 +10,13 @@ public interface LogInService {
 
 	public User addUser(User user) throws UserException;
 
-	public User removeUser(User user) throws UserException;
-
-	public CurrentUserSession loginUser(UserDTO dto) throws UserException;
-
-	public String signOutUser(String key) throws UserException;
+	public boolean adminOrNot(String uuid) throws UserException;
 
 	public boolean loggedInOrNot(String uuid) throws LoginException;
 
-	public boolean adminOrNot(String uuid) throws UserException;
+	public CurrentUserSession loginUser(UserDTO dto) throws UserException;
+
+	public User removeUser(User user) throws UserException;
+
+	public String signOutUser(String key) throws UserException;
 }

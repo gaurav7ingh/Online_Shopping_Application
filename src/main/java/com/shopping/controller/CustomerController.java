@@ -38,18 +38,7 @@ public class CustomerController {
 	public ResponseEntity<Customer> addCustomerHandler(@Valid @RequestBody Customer customer)
 			throws CustomerException, UserException {
 		Customer savedcustomer = cSer.addCustomer(customer);
-		return new ResponseEntity<Customer>(savedcustomer, HttpStatus.OK);
-	}
-
-	@PutMapping
-	public ResponseEntity<Customer> updateCustomerHandler(@RequestBody Customer customer, @RequestParam String uuid)
-			throws CustomerException, LoginException {
-
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
-
-		Customer updatedCustomer = cSer.updateCustomer(customer);
-		return new ResponseEntity<Customer>(updatedCustomer, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(savedcustomer, HttpStatus.OK);
 	}
 
 	@DeleteMapping
@@ -61,34 +50,45 @@ public class CustomerController {
 
 		Customer deletedCustomer = cSer.removeCustomer(customer);
 
-		return new ResponseEntity<Customer>(deletedCustomer, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(deletedCustomer, HttpStatus.ACCEPTED);
+	}
+
+	@PutMapping
+	public ResponseEntity<Customer> updateCustomerHandler(@RequestBody Customer customer, @RequestParam String uuid)
+			throws CustomerException, LoginException {
+
+		if (!logService.loggedInOrNot(uuid))
+			throw new LoginException("This user is not logged in");
+
+		Customer updatedCustomer = cSer.updateCustomer(customer);
+		return new ResponseEntity<>(updatedCustomer, HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/locations/{location}")
+	public ResponseEntity<List<Customer>> viewAllCustomerHandler(@RequestParam String uuid,
+			@PathVariable("location") String location) throws CustomerException, LoginException, UserException {
+
+		if (!logService.loggedInOrNot(uuid))
+			throw new LoginException("This user is not logged in");
+
+		if (!logService.adminOrNot(uuid))
+			throw new UserException("You are not allowed to see all the customer...!");
+
+		List<Customer> customerlist = cSer.ViewAllCustomers(location);
+
+		return new ResponseEntity<>(customerlist, HttpStatus.OK);
+
 	}
 
 	@GetMapping("/{customerId}")
 	public ResponseEntity<Customer> viewCustomerHandler(@PathVariable Integer customerId, @RequestParam String uuid)
 			throws LoginException, CustomerException {
-		
+
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
 
 		Customer viewCustomer = cSer.viewCustomer(customerId);
 
-		return new ResponseEntity<Customer>(viewCustomer, HttpStatus.OK);
-	}
-
-	@GetMapping("/locations/{location}")
-	public ResponseEntity<List<Customer>> viewAllCustomerHandler(@RequestParam String uuid,@PathVariable("location") String location)
-			throws CustomerException, LoginException, UserException {
-
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
-		
-		if(!logService.adminOrNot(uuid))
-			throw new UserException("You are not allowed to see all the customer...!");
-
-		List<Customer> customerlist = cSer.ViewAllCustomers(location);
-
-		return new ResponseEntity<List<Customer>>(customerlist, HttpStatus.OK);
-
+		return new ResponseEntity<>(viewCustomer, HttpStatus.OK);
 	}
 }

@@ -26,24 +26,24 @@ public class Category {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "categorys")
 	private List<Product> products = new ArrayList<>();
 
+	public String getCategory() {
+		return category;
+	}
+
 	public Integer getCatId() {
 		return catId;
 	}
 
-	public void setCatId(Integer catId) {
-		this.catId = catId;
-	}
-
-	public String getCategory() {
-		return category;
+	public List<Product> getProducts() {
+		return products;
 	}
 
 	public void setCategory(String category) {
 		this.category = category;
 	}
 
-	public List<Product> getProducts() {
-		return products;
+	public void setCatId(Integer catId) {
+		this.catId = catId;
 	}
 
 	public void setProducts(List<Product> products) {

@@ -63,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> viewProductByProductName(String productName) throws ProductException {
 		List<Product> products = prodRepo.findByProductName(productName);
-		if(products.isEmpty())
+		if (products.isEmpty())
 			throw new ProductException("No product found with this name");
 		return products;
 	}

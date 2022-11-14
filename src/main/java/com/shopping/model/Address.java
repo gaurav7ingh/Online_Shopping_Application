@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Validated
 public class Address {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer addressId;
@@ -53,17 +52,10 @@ public class Address {
 	private Customer customer;
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(buildingName, city, country, pincode, state, streetNo);
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
 		Address other = (Address) obj;
 		return Objects.equals(buildingName, other.buildingName) && Objects.equals(city, other.city)
@@ -75,66 +67,69 @@ public class Address {
 		return addressId;
 	}
 
-	public void setAddressId(Integer addressId) {
-		this.addressId = addressId;
-	}
-
-	public String getStreetNo() {
-		return streetNo;
-	}
-
-	public void setStreetNo(String streetNo) {
-		this.streetNo = streetNo;
-	}
-
 	public String getBuildingName() {
 		return buildingName;
-	}
-
-	public void setBuildingName(String buildingName) {
-		this.buildingName = buildingName;
 	}
 
 	public String getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
 	public String getCountry() {
 		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getPincode() {
-		return pincode;
-	}
-
-	public void setPincode(String pincode) {
-		this.pincode = pincode;
 	}
 
 	public Customer getCustomer() {
 		return customer;
 	}
 
+	public String getPincode() {
+		return pincode;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public String getStreetNo() {
+		return streetNo;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(buildingName, city, country, pincode, state, streetNo);
+	}
+
+	public void setAddressId(Integer addressId) {
+		this.addressId = addressId;
+	}
+
+	public void setBuildingName(String buildingName) {
+		this.buildingName = buildingName;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
 
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public void setStreetNo(String streetNo) {
+		this.streetNo = streetNo;
+	}
 
 }

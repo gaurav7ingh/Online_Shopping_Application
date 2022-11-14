@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.shopping.model.Product;
 
 @Repository
-public interface ProductRepo extends JpaRepository<Product, Integer>{
-	
+public interface ProductRepo extends JpaRepository<Product, Integer> {
+
 	public List<Product> findByProductName(String name);
-	
+
 }

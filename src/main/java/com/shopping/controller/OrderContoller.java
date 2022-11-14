@@ -49,20 +49,6 @@ public class OrderContoller {
 
 		Orders order = oSer.addOrders(orders, customerId, addressId);
 
-		return new ResponseEntity<Orders>(order, HttpStatus.ACCEPTED);
-	}
-
-	@PutMapping
-	public ResponseEntity<Orders> updateOrderHandler(@RequestParam Integer orderId,
-			@RequestParam(required = true) String uuid)
-			throws OrderException, CustomerException, ProductException, LoginException {
-
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
-
-		Orders order = oSer.viewOrder(orderId);
-		order = oSer.updateOrders(order);
-
 		return new ResponseEntity<>(order, HttpStatus.ACCEPTED);
 	}
 
@@ -80,17 +66,30 @@ public class OrderContoller {
 		return new ResponseEntity<>(order, HttpStatus.FOUND);
 	}
 
-	@GetMapping
-	public ResponseEntity<Orders> viewOrderHandler(@RequestParam Integer ordersId,
+	@PutMapping
+	public ResponseEntity<Orders> updateOrderHandler(@RequestParam Integer orderId,
 			@RequestParam(required = true) String uuid)
 			throws OrderException, CustomerException, ProductException, LoginException {
 
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
 
-		Orders order = oSer.viewOrder(ordersId);
+		Orders order = oSer.viewOrder(orderId);
+		order = oSer.updateOrders(order);
 
-		return new ResponseEntity<>(order, HttpStatus.FOUND);
+		return new ResponseEntity<>(order, HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/customers/{customerId}")
+	public ResponseEntity<List<Orders>> viewAllOrderByIDHandler(@PathVariable(value = "customerId") Integer customerId,
+			@RequestParam String uuid) throws OrderException, CustomerException, ProductException, LoginException {
+
+		if (!logService.loggedInOrNot(uuid))
+			throw new LoginException("This user is not logged in");
+
+		List<Orders> orders = oSer.viewAllOrdersByUserId(customerId);
+
+		return new ResponseEntity<>(orders, HttpStatus.FOUND);
 	}
 
 	@GetMapping("/dates/{dd-MM-yyyy}")
@@ -109,16 +108,17 @@ public class OrderContoller {
 		return new ResponseEntity<>(orders, HttpStatus.FOUND);
 	}
 
-	@GetMapping("/customers/{customerId}")
-	public ResponseEntity<List<Orders>> viewAllOrderByIDHandler(@PathVariable(value = "customerId") Integer customerId,
-			@RequestParam String uuid) throws OrderException, CustomerException, ProductException, LoginException {
+	@GetMapping
+	public ResponseEntity<Orders> viewOrderHandler(@RequestParam Integer ordersId,
+			@RequestParam(required = true) String uuid)
+			throws OrderException, CustomerException, ProductException, LoginException {
 
 		if (!logService.loggedInOrNot(uuid))
 			throw new LoginException("This user is not logged in");
 
-		List<Orders> orders = oSer.viewAllOrdersByUserId(customerId);
+		Orders order = oSer.viewOrder(ordersId);
 
-		return new ResponseEntity<>(orders, HttpStatus.FOUND);
+		return new ResponseEntity<>(order, HttpStatus.FOUND);
 	}
 
 }
