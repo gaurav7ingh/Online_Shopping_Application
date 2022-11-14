@@ -1,11 +1,8 @@
 
 
-# REST API for an Online Shopping Application (GetAll.com)
+# REST API for an Online Shopping Application 
 
-<img src="https://user-images.githubusercontent.com/101389007/201760809-ffb81fe1-271e-48bd-befa-0d2b56bab7f9.jpg">
-
-
-* This application is used by ABC Company admin and their Customer for online shopping 
+* This application is used by GetAll.com Company admin and their Customer for online shopping 
 * This application will help Customer to buy the products and view order details.
 * Customer can register themselves and login. Add product to the cart and purchase it .
 * This application will help Admin to search Product list ,add new products ,remove products and update product .
