@@ -21,22 +21,50 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private CartDao cartDao;
-	
+
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private CustomerRepo customerRepo;
 
 	@Override
 	public Cart addProductToCart(Cart c, Product p, Integer quantity) throws CartException, ProductException {
-		if(c==null)
+		if (c == null)
 			throw new CartException("No Cart exits for adding this product");
 		p = productService.viewProduct(p.getProductId());
 		c.getProducts().put(p, quantity);
-		
+
 		Cart cart = cartDao.save(c);
-		
+
+		return cart;
+	}
+
+	@Override
+	public Cart getCartByCustomerId(Integer customerId) throws CartException, CustomerException {
+		Customer customer = customerRepo.findById(customerId)
+				.orElseThrow(() -> new CustomerException("Customer not found"));
+
+		Cart cart = customer.getCart();
+
+		return cart;
+	}
+
+	@Override
+	public Cart getCartById(Integer cartId) throws CartException {
+		Cart cart = cartDao.findById(cartId).orElseThrow(() -> new CartException("Cart not found...!"));
+		return cart;
+
+	}
+
+	@Override
+	public Cart removeAllProduct(Cart c) throws CartException {
+		c = cartDao.findById(c.getCartId())
+				.orElseThrow(() -> new CartException("No Cart exits for removing the products"));
+
+		c.setProducts(new HashMap<>());
+		Cart cart = cartDao.save(c);
+
 		return cart;
 	}
 
@@ -67,9 +95,9 @@ public class CartServiceImpl implements CartService {
 
 		else {
 			Cart cs = optional.get();
-			
+
 			p = productService.viewProduct(p.getProductId());
-			
+
 			cs.getProducts().put(p, quantity);
 
 			Cart cart = cartDao.save(cs);
@@ -78,37 +106,11 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Cart removeAllProduct(Cart c) throws CartException {
-		c = cartDao.findById(c.getCartId()).orElseThrow(()->new CartException("No Cart exits for removing the products"));
-			
-		c.setProducts(new HashMap<>());
-		Cart cart = cartDao.save(c);
-		
-		return cart;
-	}
-
-	@Override
 	public Map<Product, Integer> viewAllProduct(Cart c) throws CartException {
-		c = cartDao.findById(c.getCartId()).orElseThrow(()->new CartException("No Cart exits"));
-		
+		c = cartDao.findById(c.getCartId()).orElseThrow(() -> new CartException("No Cart exits"));
+
 		Map<Product, Integer> producList = c.getProducts();
 		return producList;
-	}
-
-	@Override
-	public Cart getCartById(Integer cartId) throws CartException {
-		Cart cart = cartDao.findById(cartId).orElseThrow(()-> new CartException("Cart not found...!"));
-		return cart;
-		
-	}
-
-	@Override
-	public Cart getCartByCustomerId(Integer customerId) throws CartException, CustomerException {
-		Customer customer =  customerRepo.findById(customerId).orElseThrow(()->new CustomerException("Customer not found"));
-		
-		Cart cart = customer.getCart();
-		
-		return cart;
 	}
 
 }

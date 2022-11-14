@@ -44,7 +44,7 @@ public class Product {
 
 	@Min(value = 1)
 	private Integer quantity;
-	
+
 	@NotNull
 	private String category;
 
@@ -53,103 +53,11 @@ public class Product {
 	@JoinColumn(name = "category_id")
 	private Category categorys;
 
-	
-
-	public Integer getProductId() {
-		return productId;
-	}
-
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-	public String getSpecification() {
-		return specification;
-	}
-
-	public void setSpecification(String specification) {
-		this.specification = specification;
-	}
-
-	public String getManufacturer() {
-		return manufacturer;
-	}
-
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	public Category getCategorys() {
-		return categorys;
-	}
-
-	public void setCategorys(Category categorys) {
-		this.categorys = categorys;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((productName == null) ? 0 : productName.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(price);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((color == null) ? 0 : color.hashCode());
-		result = prime * result + ((specification == null) ? 0 : specification.hashCode());
-		result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
-		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
-		result = prime * result + ((category == null) ? 0 : category.hashCode());
-		return result;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
 		Product other = (Product) obj;
 		if (productName == null) {
@@ -187,12 +95,98 @@ public class Product {
 		return true;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public Category getCategorys() {
+		return categorys;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public String getSpecification() {
+		return specification;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((productName == null) ? 0 : productName.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + ((specification == null) ? 0 : specification.hashCode());
+		result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
+		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		return result;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public void setCategorys(Category categorys) {
+		this.categorys = categorys;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public void setSpecification(String specification) {
+		this.specification = specification;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [productId=" + productId + ", productName=" + productName + ", price=" + price + ", color="
 				+ color + "]";
 	}
-	
-	
 
 }

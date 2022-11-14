@@ -12,11 +12,10 @@ import com.shopping.model.Orders;
 @Repository
 public interface OrderRepo extends JpaRepository<Orders, Integer> {
 
-	public List<Orders> findByOrderDate(LocalDate orderDate);
-	
 	public List<Orders> findByCustomer(Customer customer);
-	
+
 	public List<Orders> findByLocation(String location);
 
-	
+	public List<Orders> findByOrderDate(LocalDate orderDate);
+
 }

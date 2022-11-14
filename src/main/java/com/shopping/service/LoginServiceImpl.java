@@ -29,21 +29,25 @@ public class LoginServiceImpl implements LogInService {
 		User user = uRepo.findByEmail(u.getEmail());
 		if (!(user == null))
 			throw new UserException("User is already registerd");
+
 		user = uRepo.save(u);
 		return user;
 	}
 
 	@Override
-	public User removeUser(User user) throws UserException {
+	public boolean adminOrNot(String uuid) throws UserException {
+		CurrentUserSession curr = currRepo.findByUuid(uuid);
+		if (curr.getRole().equalsIgnoreCase("admin"))
+			return true;
+		throw new UserException("You are not allowed...!");
+	}
 
-		User existingUser = uRepo.findByEmail(user.getEmail());
-
-		if (existingUser == null) {
-			uRepo.delete(existingUser);
-			return existingUser;
-		} else {
-			throw new UserException("User Unavailable to found!.....");
-		}
+	@Override
+	public boolean loggedInOrNot(String uuid) throws LoginException {
+		CurrentUserSession curr = currRepo.findByUuid(uuid);
+		if (curr == null)
+			throw new LoginException("user is not logged in");
+		return true;
 	}
 
 	@Override
@@ -78,6 +82,19 @@ public class LoginServiceImpl implements LogInService {
 	}
 
 	@Override
+	public User removeUser(User user) throws UserException {
+
+		User existingUser = uRepo.findByEmail(user.getEmail());
+
+		if (existingUser == null) {
+			uRepo.delete(existingUser);
+			return existingUser;
+		} else {
+			throw new UserException("User Unavailable to found!.....");
+		}
+	}
+
+	@Override
 	public String signOutUser(String key) throws UserException {
 
 		CurrentUserSession validUserSession = currRepo.findByUuid(key);
@@ -87,22 +104,6 @@ public class LoginServiceImpl implements LogInService {
 		}
 		currRepo.delete(validUserSession);
 		return "Sign Out Successfully";
-	}
-
-	@Override
-	public boolean loggedInOrNot(String uuid) throws LoginException {
-		CurrentUserSession curr = currRepo.findByUuid(uuid);
-		if (curr == null)
-			throw new LoginException("user is not logged in");
-		return true;
-	}
-
-	@Override
-	public boolean adminOrNot(String uuid) throws UserException {
-		CurrentUserSession curr = currRepo.findByUuid(uuid);
-		if (curr.getRole().equalsIgnoreCase("admin"))
-			return true;
-		throw new UserException("You are not allowed...!");
 	}
 
 }

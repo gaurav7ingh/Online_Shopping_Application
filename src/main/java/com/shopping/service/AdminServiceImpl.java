@@ -23,8 +23,8 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Product addProduct(Product product) throws ProductException {
 		Optional<Product> opt = null;
-        if(product.getProductId()!=null)
-        	opt = prodRepo.findById(product.getProductId());
+		if (product.getProductId() != null)
+			opt = prodRepo.findById(product.getProductId());
 
 		if (opt != null && opt.isPresent()) {
 			throw new ProductException("Product Already Registered!.......");
@@ -48,28 +48,28 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Product updateProduct(Product product) throws ProductException {
-
-		Optional<Product> opt = prodRepo.findById(product.getProductId());
-
-		if (!opt.isPresent())
-			throw new ProductException("No Product exists with this information");
-		
-		Category cat =  opt.get().getCategorys();
-		product.setCategorys(cat);
-		Product updatedProduct = prodRepo.save(product);
-		if (updatedProduct == null)
-			throw new ProductException("Product not updated");
-		return updatedProduct;
-	}
-
-	@Override
 	public Product removeProduct(Integer pid) throws ProductException {
 		Optional<Product> opt = prodRepo.findById(pid);
 		if (!opt.isPresent())
 			throw new ProductException("This Product doesn't exist");
 		prodRepo.delete(opt.get());
 		return opt.get();
+	}
+
+	@Override
+	public Product updateProduct(Product product) throws ProductException {
+
+		Optional<Product> opt = prodRepo.findById(product.getProductId());
+
+		if (!opt.isPresent())
+			throw new ProductException("No Product exists with this information");
+
+		Category cat = opt.get().getCategorys();
+		product.setCategorys(cat);
+		Product updatedProduct = prodRepo.save(product);
+		if (updatedProduct == null)
+			throw new ProductException("Product not updated");
+		return updatedProduct;
 	}
 
 }
