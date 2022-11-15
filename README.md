@@ -1,8 +1,8 @@
 
 
-# REST API for an Online Shopping Application 
+# REST API for Online Shopping Application 
 
-* This application is used by GetAll.com Company admin and their Customer for online shopping 
+* This application is used by ABC Company admin and their Customer for online shopping 
 * This application will help Customer to buy the products and view order details.
 * Customer can register themselves and login. Add product to the cart and purchase it .
 * This application will help Admin to search Product list ,add new products ,remove products and update product .
@@ -33,12 +33,17 @@
 
 * User authentication & validation with uuid key.
 * Admin Features:
-    * Admin to search Product list ,add new products ,remove products and update product .
+    * Admin can register himself.
+    * Admin can add new products.
+    * Admin can remove products.
+    * Admin can update products.
 * Customer Features:
     * A user can register himself or herself on the platform.
     * He/She can check the products item and product Category.
     * If Product is available Customer can add the product to Cart.
-    * After adding to the cart if the customer want He/She can also cancel the order or place the order.    
+    * Customer can order the products from cart.
+    * Customer can cancel the order.
+    * Customer can apply for return in 7 days.
 
 
 ## Contributors
