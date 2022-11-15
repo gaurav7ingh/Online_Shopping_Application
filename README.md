@@ -58,7 +58,7 @@
 
 ## Installation & Run
 
-* Before running the API server, you should update the database config inside the [application.properties](https://github.com/gaurav7ingh/light-temper-9603/blob/main/src/main/java/com/shopping/OnlineShoppingApplication.java) file. 
+* Before running the API server, you should update the database config inside the [application.properties](https://github.com/gaurav7ingh/light-temper-9603/blob/main/pom.xml) file. 
 * Update the port number, username and password as per your local database config.
 
 ```
