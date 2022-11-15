@@ -21,6 +21,7 @@ import com.shopping.exception.AddressException;
 import com.shopping.exception.CustomerException;
 import com.shopping.exception.LoginException;
 import com.shopping.model.Address;
+import com.shopping.model.CurrentUserSession;
 import com.shopping.service.AddressService;
 import com.shopping.service.LogInService;
 
@@ -28,19 +29,22 @@ import com.shopping.service.LogInService;
 @RequestMapping("/addresses")
 public class AddressController {
 
-	@Autowired
 	private AddressService aSer;
 
-	@Autowired
 	private LogInService logService;
 
-	@PostMapping("/{customerId}")
-	public ResponseEntity<Address> addAddressForCustomerHandler(@Valid @RequestBody Address a,
-			@PathVariable Integer customerId, @RequestParam String uuid)
-			throws AddressException, CustomerException, LoginException {
+	private CurrentUserSession cs;
 
-		if (!logService.loggedInOrNot(uuid))
+	@PostMapping
+	public ResponseEntity<Address> addAddressHandler(@Valid @RequestBody Address a, @RequestParam String uuid)
+			throws LoginException, AddressException, CustomerException {
+
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
+
+		Integer customerId = cs.getUserId();
 
 		Address add = aSer.createAddress(a, customerId);
 
@@ -49,9 +53,11 @@ public class AddressController {
 
 	@DeleteMapping
 	public ResponseEntity<Address> removeAddressHandler(@RequestBody Address add, @RequestParam String uuid)
-			throws AddressException, CustomerException, LoginException {
+			throws LoginException, AddressException {
 
-		if (!logService.loggedInOrNot(uuid))
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
 
 		return new ResponseEntity<>(aSer.removeAddress(add), HttpStatus.ACCEPTED);
@@ -59,32 +65,54 @@ public class AddressController {
 
 	@PutMapping
 	public ResponseEntity<Address> updatedAddressHandler(@RequestBody Address add, @RequestParam String uuid)
-			throws AddressException, CustomerException, LoginException {
+			throws LoginException, AddressException {
 
-		if (!logService.loggedInOrNot(uuid))
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
 
 		return new ResponseEntity<>(aSer.updateAddress(add), HttpStatus.ACCEPTED);
 	}
 
-	@GetMapping("/address/{addressId}")
+	@GetMapping("/{addressId}")
 	public ResponseEntity<Address> viewAddressHandler(@PathVariable Integer addressId, @RequestParam String uuid)
-			throws AddressException, CustomerException, LoginException {
+			throws LoginException, AddressException {
 
-		if (!logService.loggedInOrNot(uuid))
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
 
 		return new ResponseEntity<>(aSer.viewAddress(addressId), HttpStatus.OK);
 	}
 
-	@GetMapping("/{customerId}")
-	public ResponseEntity<Set<Address>> viewAllAddressOfCustomerHandler(@PathVariable(value = "customerId") Integer id,
-			@RequestParam String uuid) throws AddressException, CustomerException, LoginException {
+	@GetMapping
+	public ResponseEntity<Set<Address>> viewAllAddressHandler(@RequestParam String uuid)
+			throws LoginException, CustomerException, AddressException {
 
-		if (!logService.loggedInOrNot(uuid))
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
 
+		Integer id = cs.getUserId();
+
 		return new ResponseEntity<>(aSer.viewAllAddress(id), HttpStatus.OK);
+	}
+
+	@Autowired
+	public void setaSer(AddressService aSer) {
+		this.aSer = aSer;
+	}
+
+	@Autowired
+	public void setLogService(LogInService logService) {
+		this.logService = logService;
+	}
+
+	public void setCs(CurrentUserSession cs) {
+		this.cs = cs;
 	}
 
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shopping.exception.CustomerException;
 import com.shopping.exception.LoginException;
 import com.shopping.exception.UserException;
+import com.shopping.model.CurrentUserSession;
 import com.shopping.model.Customer;
 import com.shopping.service.CustomerService;
 import com.shopping.service.LogInService;
@@ -28,15 +29,16 @@ import com.shopping.service.LogInService;
 @RequestMapping("/customers")
 public class CustomerController {
 
-	@Autowired
 	private CustomerService cSer;
 
-	@Autowired
 	private LogInService logService;
+
+	private CurrentUserSession cs;
 
 	@PostMapping
 	public ResponseEntity<Customer> addCustomerHandler(@Valid @RequestBody Customer customer)
 			throws CustomerException, UserException {
+		customer.setRole("customer");
 		Customer savedcustomer = cSer.addCustomer(customer);
 		return new ResponseEntity<>(savedcustomer, HttpStatus.OK);
 	}
@@ -45,9 +47,10 @@ public class CustomerController {
 	public ResponseEntity<Customer> deleteCustomerHandler(@RequestBody Customer customer, @RequestParam String uuid)
 			throws LoginException, CustomerException {
 
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
+		this.setCs(logService.getSessionByUuid(uuid));
 
+		if (cs == null)
+			throw new LoginException("This user is not logged in");
 		Customer deletedCustomer = cSer.removeCustomer(customer);
 
 		return new ResponseEntity<>(deletedCustomer, HttpStatus.ACCEPTED);
@@ -57,22 +60,27 @@ public class CustomerController {
 	public ResponseEntity<Customer> updateCustomerHandler(@RequestBody Customer customer, @RequestParam String uuid)
 			throws CustomerException, LoginException {
 
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
+		this.setCs(logService.getSessionByUuid(uuid));
 
-		Customer updatedCustomer = cSer.updateCustomer(customer);
+		if (cs == null)
+			throw new LoginException("This user is not logged in");
+		Customer updatedCustomer;
+		if (cs.getUserId() == customer.getCustomerId())
+			updatedCustomer = cSer.updateCustomer(customer);
+		else
+			throw new CustomerException("You are not allowed to update the user Id...!");
+
 		return new ResponseEntity<>(updatedCustomer, HttpStatus.ACCEPTED);
 	}
 
-	@GetMapping("/locations/{location}")
+	@GetMapping("/{location}")
 	public ResponseEntity<List<Customer>> viewAllCustomerHandler(@RequestParam String uuid,
 			@PathVariable("location") String location) throws CustomerException, LoginException, UserException {
 
-		if (!logService.loggedInOrNot(uuid))
-			throw new LoginException("This user is not logged in");
+		this.setCs(logService.getSessionByUuid(uuid));
 
-		if (!logService.adminOrNot(uuid))
-			throw new UserException("You are not allowed to see all the customer...!");
+		if (cs == null)
+			throw new LoginException("This user is not logged in");
 
 		List<Customer> customerlist = cSer.ViewAllCustomers(location);
 
@@ -80,15 +88,34 @@ public class CustomerController {
 
 	}
 
-	@GetMapping("/{customerId}")
-	public ResponseEntity<Customer> viewCustomerHandler(@PathVariable Integer customerId, @RequestParam String uuid)
+	@GetMapping
+	public ResponseEntity<Customer> viewCustomerHandler(@RequestParam String uuid)
 			throws LoginException, CustomerException {
 
-		if (!logService.loggedInOrNot(uuid))
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
+
+		Integer customerId = cs.getUserId();
 
 		Customer viewCustomer = cSer.viewCustomer(customerId);
 
 		return new ResponseEntity<>(viewCustomer, HttpStatus.OK);
 	}
+
+	@Autowired
+	public void setcSer(CustomerService cSer) {
+		this.cSer = cSer;
+	}
+
+	@Autowired
+	public void setLogService(LogInService logService) {
+		this.logService = logService;
+	}
+
+	public void setCs(CurrentUserSession cs) {
+		this.cs = cs;
+	}
+
 }

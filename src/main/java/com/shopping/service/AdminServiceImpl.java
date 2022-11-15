@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopping.exception.ProductException;
+import com.shopping.exception.UserException;
 import com.shopping.model.Category;
 import com.shopping.model.Product;
 import com.shopping.repository.CategoryRepo;
@@ -48,10 +49,13 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Product removeProduct(Integer pid) throws ProductException {
+	public Product removeProduct(Integer pid, Integer sellerId) throws ProductException, UserException {
 		Optional<Product> opt = prodRepo.findById(pid);
 		if (!opt.isPresent())
 			throw new ProductException("This Product doesn't exist");
+		if (!(opt.get().getSellerId() == sellerId))
+			throw new UserException("You are not elegible for removing this product...!");
+
 		prodRepo.delete(opt.get());
 		return opt.get();
 	}

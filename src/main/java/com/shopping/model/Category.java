@@ -23,7 +23,7 @@ public class Category {
 	@Column(unique = true)
 	private String category;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "categorys")
+	@OneToMany(cascade = CascadeType.DETACH, mappedBy = "categorys")
 	private List<Product> products = new ArrayList<>();
 
 	public String getCategory() {

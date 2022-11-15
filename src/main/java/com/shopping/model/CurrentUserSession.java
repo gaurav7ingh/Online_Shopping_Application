@@ -3,7 +3,6 @@ package com.shopping.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -17,15 +16,18 @@ public class CurrentUserSession {
 	@Size(max = 10)
 	private String uuid;
 
-	@Email
 	@NotNull
-	private String email;
+	private Integer cartId;
 
 	@Size(max = 20, message = "invalid role")
 	private String role;
 
-	public String getEmail() {
-		return email;
+	public Integer getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(Integer cartId) {
+		this.cartId = cartId;
 	}
 
 	public String getRole() {
@@ -38,10 +40,6 @@ public class CurrentUserSession {
 
 	public String getUuid() {
 		return uuid;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public void setRole(String role) {
@@ -58,8 +56,7 @@ public class CurrentUserSession {
 
 	@Override
 	public String toString() {
-		return "CurrentUserSession \n [userId=" + userId + ", \n uuid=" + uuid + ", \n email=" + email + ", \n role="
-				+ role + "]";
+		return "CurrentUserSession \n [userId=" + userId + ", \n uuid=" + uuid + ", \n role=" + role + "]";
 	}
 
 }

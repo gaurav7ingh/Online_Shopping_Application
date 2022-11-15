@@ -48,7 +48,7 @@ public class Address {
 
 	@JsonIgnore
 	@JoinColumn(name = "customer_id")
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.DETACH)
 	private Customer customer;
 
 	@Override

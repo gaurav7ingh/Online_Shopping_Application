@@ -82,13 +82,15 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Set<Address> viewAllAddress(Integer id) throws CustomerException {
+	public Set<Address> viewAllAddress(Integer id) throws CustomerException, AddressException {
 		Optional<Customer> optional = customerDao.findById(id);
 		if (!optional.isPresent())
 			throw new CustomerException("No user exist with this id");
 
-		Customer c = optional.get();
-		return c.getAddresses();
+		Set<Address> addresses = optional.get().getAddresses();
+		if (addresses.isEmpty())
+			throw new AddressException("No address found for this customer");
+		return addresses;
 	}
 
 }

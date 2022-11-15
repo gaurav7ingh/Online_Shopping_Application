@@ -8,13 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopping.exception.CartException;
-import com.shopping.exception.CustomerException;
 import com.shopping.exception.ProductException;
 import com.shopping.model.Cart;
-import com.shopping.model.Customer;
 import com.shopping.model.Product;
 import com.shopping.repository.CartDao;
-import com.shopping.repository.CustomerRepo;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -25,8 +22,8 @@ public class CartServiceImpl implements CartService {
 	@Autowired
 	private ProductService productService;
 
-	@Autowired
-	private CustomerRepo customerRepo;
+//	@Autowired
+//	private CustomerRepo customerRepo;
 
 	@Override
 	public Cart addProductToCart(Cart c, Product p, Integer quantity) throws CartException, ProductException {
@@ -40,15 +37,15 @@ public class CartServiceImpl implements CartService {
 		return cart;
 	}
 
-	@Override
-	public Cart getCartByCustomerId(Integer customerId) throws CartException, CustomerException {
-		Customer customer = customerRepo.findById(customerId)
-				.orElseThrow(() -> new CustomerException("Customer not found"));
-
-		Cart cart = customer.getCart();
-
-		return cart;
-	}
+//	@Override
+//	public Cart getCartByCustomerId(Integer customerId) throws CartException, CustomerException {
+//		Customer customer = customerRepo.findById(customerId)
+//				.orElseThrow(() -> new CustomerException("Customer not found"));
+//
+//		Cart cart = customer.getCart();
+//
+//		return cart;
+//	}
 
 	@Override
 	public Cart getCartById(Integer cartId) throws CartException {
