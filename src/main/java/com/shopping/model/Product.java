@@ -49,7 +49,10 @@ public class Product {
 	private String category;
 
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.ALL)
+	private Integer sellerId;
+
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category categorys;
 
@@ -93,6 +96,14 @@ public class Product {
 		} else if (!category.equals(other.category))
 			return false;
 		return true;
+	}
+
+	public Integer getSellerId() {
+		return sellerId;
+	}
+
+	public void setSellerId(Integer sellerId) {
+		this.sellerId = sellerId;
 	}
 
 	public String getCategory() {

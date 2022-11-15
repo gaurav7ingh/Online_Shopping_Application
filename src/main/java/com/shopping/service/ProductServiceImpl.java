@@ -15,11 +15,19 @@ import com.shopping.repository.ProductRepo;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-	@Autowired
 	private ProductRepo prodRepo;
 
-	@Autowired
 	private CategoryRepo cRepo;
+	
+	@Autowired
+	public void setProdRepo(ProductRepo prodRepo) {
+		this.prodRepo = prodRepo;
+	}
+
+	@Autowired
+	public void setcRepo(CategoryRepo cRepo) {
+		this.cRepo = cRepo;
+	}
 
 	@Override
 	public List<Product> viewAllProducts() throws ProductException {

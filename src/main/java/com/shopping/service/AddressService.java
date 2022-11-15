@@ -15,6 +15,6 @@ public interface AddressService {
 
 	public Address viewAddress(Integer a) throws AddressException;
 
-	public Set<Address> viewAllAddress(Integer id) throws CustomerException;
+	public Set<Address> viewAllAddress(Integer id) throws CustomerException, AddressException;
 
 }

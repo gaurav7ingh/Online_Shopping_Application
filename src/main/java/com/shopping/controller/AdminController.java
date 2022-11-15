@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shopping.exception.LoginException;
 import com.shopping.exception.ProductException;
 import com.shopping.exception.UserException;
+import com.shopping.model.CurrentUserSession;
 import com.shopping.model.Product;
 import com.shopping.service.AdminService;
 import com.shopping.service.LogInService;
@@ -25,21 +26,25 @@ import com.shopping.service.LogInService;
 @RequestMapping("/admin")
 public class AdminController {
 
-	@Autowired
 	private AdminService adminService;
 
-	@Autowired
 	private LogInService logService;
+
+	private CurrentUserSession cs;
 
 	@PostMapping
 	public ResponseEntity<Product> addProductHandler(@Valid @RequestBody Product product, @RequestParam String uuid)
-			throws ProductException, LoginException, UserException {
+			throws LoginException, ProductException, UserException {
 
-		if (!logService.loggedInOrNot(uuid))
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
 
-		if (!logService.adminOrNot(uuid))
+		if (!cs.getRole().equalsIgnoreCase("admin"))
 			throw new UserException("You are not allowed to add the product...!");
+
+		product.setSellerId(cs.getUserId());
 
 		Product p = adminService.addProduct(product);
 
@@ -49,15 +54,17 @@ public class AdminController {
 
 	@DeleteMapping("/{productId}")
 	public ResponseEntity<Product> removeProductHandler(@PathVariable("productId") Integer productId,
-			@RequestParam String uuid) throws ProductException, LoginException, UserException {
+			@RequestParam String uuid) throws LoginException, ProductException, UserException {
 
-		if (!logService.loggedInOrNot(uuid))
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
 
-		if (!logService.adminOrNot(uuid))
-			throw new UserException("You are not allowed to Remove the product...!");
+		if (!cs.getRole().equalsIgnoreCase("admin"))
+			throw new UserException("You are not allowed to add the product...!");
 
-		Product p = adminService.removeProduct(productId);
+		Product p = adminService.removeProduct(productId, cs.getUserId());
 
 		return new ResponseEntity<>(p, HttpStatus.CREATED);
 
@@ -67,16 +74,32 @@ public class AdminController {
 	public ResponseEntity<Product> updateProductHandler(@RequestBody Product product, @RequestParam String uuid)
 			throws ProductException, LoginException, UserException {
 
-		if (!logService.loggedInOrNot(uuid))
+		this.setCs(logService.getSessionByUuid(uuid));
+
+		if (cs == null)
 			throw new LoginException("This user is not logged in");
 
-		if (!logService.adminOrNot(uuid))
-			throw new UserException("You are not allowed to update the product...!");
+		if (!cs.getRole().equalsIgnoreCase("admin"))
+			throw new UserException("You are not allowed to add the product...!");
 
 		Product p = adminService.updateProduct(product);
 
 		return new ResponseEntity<>(p, HttpStatus.CREATED);
 
+	}
+
+	@Autowired
+	public void setAdminService(AdminService adminService) {
+		this.adminService = adminService;
+	}
+
+	@Autowired
+	public void setLogService(LogInService logService) {
+		this.logService = logService;
+	}
+
+	public void setCs(CurrentUserSession cs) {
+		this.cs = cs;
 	}
 
 }

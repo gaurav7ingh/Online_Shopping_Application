@@ -49,7 +49,7 @@ public class Orders {
 	private Map<Product, Integer> orderedProducts = new HashMap<>();
 
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.DETACH)
 	private Customer customer;
 
 	public Integer getAddressId() {

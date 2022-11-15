@@ -1,6 +1,7 @@
 package com.shopping.service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +32,14 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private AddressDao addressDao;
 
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	private AdminService adminService;
+
 	@Override
-	public Orders addOrders(Orders orders, Integer id, Integer location)
+	public Orders addOrders(Orders orders, Integer id, Integer addressId)
 			throws OrderException, CustomerException, ProductException, AddressException {
 
 		Customer customer = cusomerRepo.findById(id).get();
@@ -41,6 +48,12 @@ public class OrderServiceImpl implements OrderService {
 
 		Map<Product, Integer> products = customer.getCart().getProducts();
 
+		for (var map : products.entrySet()) {
+			Product product = productService.viewProduct(map.getKey().getProductId());
+			product.setQuantity(product.getQuantity() - map.getValue());
+			adminService.updateProduct(product);
+		}
+
 		if (products.isEmpty())
 			throw new ProductException("No product found for order...!");
 
@@ -48,12 +61,13 @@ public class OrderServiceImpl implements OrderService {
 		orders.getOrderedProducts().putAll(products);
 		orders.setCustomer(customer);
 		orders.setOrderStatus("open");
-		Address add = addressDao.findById(location)
+		Address add = addressDao.findById(addressId)
 				.orElseThrow(() -> new AddressException("Please provid the address id...!"));
 		orders.setAddressId(add.getAddressId());
 		orders.setLocation(add.getState());
 		Orders order = oRepo.save(orders);
-
+		if (order != null)
+			customer.getCart().setProducts(new HashMap<Product, Integer>());
 		return order;
 	}
 

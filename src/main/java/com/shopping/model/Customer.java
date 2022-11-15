@@ -8,11 +8,15 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Customer {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer customerId;
 
 	@NotNull
@@ -45,6 +50,14 @@ public class Customer {
 	@Column(unique = true)
 	private String email;
 
+	private String role;
+
+	@NotNull
+	@NotBlank
+	@NotEmpty
+	@Size(min = 6, max = 15, message = "the password length is not apropriate")
+	private String password;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
 	private Set<Address> addresses = new HashSet<>();
 
@@ -56,6 +69,22 @@ public class Customer {
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
 	private List<Orders> orders = new ArrayList<>();
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public Set<Address> getAddresses() {
 		return addresses;
